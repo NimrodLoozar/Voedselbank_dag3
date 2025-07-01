@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl leading-tight text-gray-900 dark:text-gray-100">
+            <h2 class="font-semibold text-xl text-gray-900 dark:text-gray-100">
                 {{ __('Voedselpakketten') }}
             </h2>
             <span class="px-3 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full">
@@ -10,8 +10,57 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-green-700 text-2xl font-semibold mb-4 underline">Overzicht gezinnen met voedselpakketten</h1>
 
+            <div class="flex items-center justify-end mb-4 gap-2">
+                <select class="border rounded px-3 py-1 text-sm">
+                    <option>Selecteer Eetwens</option>
+                    <!-- Add more options dynamically -->
+                </select>
+                <button class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">Toon Gezinnen</button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-300 text-sm text-left">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 border">Gezinsnaam</th>
+                            <th class="px-4 py-2 border">Omschrijving</th>
+                            <th class="px-4 py-2 border">Volwassenen</th>
+                            <th class="px-4 py-2 border">Kinderen</th>
+                            <th class="px-4 py-2 border">Babys</th>
+                            <th class="px-4 py-2 border">Vertegenwoordiger</th>
+                            <th class="px-4 py-2 border">Voedselpakket Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for ($i = 0; $i < 5; $i++)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border text-center">
+                                    <svg class="w-5 h-5 text-blue-500 hover:text-blue-700 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73z" />
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                        <line x1="12" y1="22.08" x2="12" y2="12" />
+                                    </svg>
+                                </td>
+                            </tr>
+                        @endfor
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="mt-6 text-right">
+                <a href="{{ route('dashboard') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">home</a>
+            </div>
         </div>
-
+    </div>
 </x-app-layout>
