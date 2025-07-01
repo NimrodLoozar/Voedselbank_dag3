@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
 
         // Call the seeders
         $this->call([
+            AllergieSeeder::class,
             ContactSeeder::class,
             LeverancierSeeder::class,
             ContactPerLeverancierSeeder::class,
