@@ -14,7 +14,7 @@ return new class extends Migration
     {
         DB::unprepared('
         DROP PROCEDURE IF EXISTS SP_GetVoedselPakkettenByGezin;
-            CREATE PROCEDURE SP_GetVoedselPakkettenByGezin()
+            CREATE PROCEDURE SP_GetVoedselPakkettenByGezin(IN p_eetwens_id INT)
             BEGIN
                 SELECT 
                     vp.id AS voedselpakket_id,
@@ -41,12 +41,13 @@ return new class extends Migration
                 LEFT JOIN personen p ON g.id = p.gezin_id AND p.is_vertegenwoordiger = 1
                 LEFT JOIN eetwens_per_gezin epg ON g.id = epg.gezin_id
                 LEFT JOIN eetwensen e ON epg.eetwens_id = e.id
+                WHERE (p_eetwens_id IS NULL OR e.id = p_eetwens_id)
                 ORDER BY vp.datum_samenstelling DESC, g.naam;
             END;
 
 
             DROP PROCEDURE IF EXISTS SP_GetVoedselPakketten;
-            CREATE PROCEDURE SP_GetVoedselPakketten()
+            CREATE PROCEDURE SP_GetVoedselPakketten(IN p_voedselpakket_id INT)
             BEGIN
                 SELECT 
                     g.naam AS naam,
@@ -66,6 +67,7 @@ return new class extends Migration
                     FROM product_per_voedselpakket
                     GROUP BY voedselpakket_id
                 ) product_count ON vp.id = product_count.voedselpakket_id
+                WHERE vp.id = p_voedselpakket_id
                 ORDER BY vp.datum_samenstelling DESC, g.naam;
             END
         ');

@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Voedselpakket;
 use App\Models\Gezin;
 use App\Models\Product;
+use App\Models\Eetwens;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VoedselpakketController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $voedselpakketten = Voedselpakket::with(['gezin', 'producten'])->get();
-        return view('voedselpakketten.index', compact('voedselpakketten'));
+        $eetwensId = $request->get('eetwens_id') ?: null;
+        $voedselpakketten = DB::select('CALL SP_GetVoedselPakkettenByGezin(?)', [$eetwensId]);
+        $eetwensen = Eetwens::all();
+        return view('voedselpakketten.index', compact('voedselpakketten', 'eetwensen'));
     }
 
     public function create()

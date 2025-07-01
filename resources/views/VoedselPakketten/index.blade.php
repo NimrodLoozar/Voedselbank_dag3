@@ -12,15 +12,22 @@
 
     <div class="py-12 px-4">
         <div class="max-w-7xl mx-auto">
-            <h1 class="text-green-700 text-2xl font-semibold mb-4 underline">Overzicht gezinnen met voedselpakketten</h1>
+            <h1 class="text-green-700 dark:text-green-400 text-2xl font-semibold mb-4 underline">Overzicht gezinnen met voedselpakketten</h1>
 
-            <div class="flex items-center justify-end mb-4 gap-2">
-                <select class="border rounded px-3 py-1 text-sm">
-                    <option>Selecteer Eetwens</option>
-                    <!-- Add more options dynamically -->
+            <form method="GET" action="{{ route('voedselpakketten.index') }}" class="flex items-center justify-end mb-4 gap-2">
+                <select name="eetwens_id" class="border rounded px-3 py-1 text-sm" onchange="this.form.submit()">
+                    <option value="">Selecteer Eetwens</option>
+                    @foreach($eetwensen as $eetwens)
+                        <option value="{{ $eetwens->id }}" {{ request('eetwens_id') == $eetwens->id ? 'selected' : '' }}>
+                            {{ $eetwens->naam }}
+                        </option>
+                    @endforeach
                 </select>
-                <button class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">Toon Gezinnen</button>
-            </div>
+                <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">Toon Gezinnen</button>
+                @if(request('eetwens_id'))
+                    <a href="{{ route('voedselpakketten.index') }}" class="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600">Reset</a>
+                @endif
+            </form>
 
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white border border-gray-300 text-sm text-left">
@@ -36,25 +43,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for ($i = 0; $i < 5; $i++)
+                        @forelse($voedselpakketten as $pakket)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border">{{ $pakket->gezinsnaam }}</td>
+                                <td class="px-4 py-2 border">{{ $pakket->omschrijving }}</td>
+                                <td class="px-4 py-2 border">{{ $pakket->volwassenen }}</td>
+                                <td class="px-4 py-2 border">{{ $pakket->kinderen }}</td>
+                                <td class="px-4 py-2 border">{{ $pakket->babys }}</td>
+                                <td class="px-4 py-2 border">{{ $pakket->vertegenwoordiger}}</td>
                                 <td class="px-4 py-2 border text-center">
-                                    <svg class="w-5 h-5 text-blue-500 hover:text-blue-700 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73z" />
-                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                                        <line x1="12" y1="22.08" x2="12" y2="12" />
-                                    </svg>
+                                    <a href="{{ route('voedselpakketten.show', $pakket->voedselpakket_id) }}" class="inline-block">
+                                        <svg class="w-5 h-5 text-blue-500 hover:text-blue-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73z" />
+                                            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                            <line x1="12" y1="22.08" x2="12" y2="12" />
+                                        </svg>
+                                    </a>
                                 </td>
                             </tr>
-                        @endfor
+                        @empty
+                            <tr>
+                                <td colspan="10" class="px-4 py-2 border text-center text-gray-500 bg-red-100 dark:bg-red-900/50">
+                                    Er zijn geen gezinnen bekent die de geselecteerde eetwens hebben
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
-
                 </table>
             </div>
 
