@@ -18,8 +18,12 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!auth()->check() || !auth()->user()->hasRole($role)) {
-            abort(403, 'Unauthorized');
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized - Please login');
+        }
+
+        if (!auth()->user()->hasRole($role)) {
+            abort(403, 'Unauthorized - Insufficient permissions');
         }
 
         return $next($request);

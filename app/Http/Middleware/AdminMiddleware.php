@@ -19,8 +19,12 @@ class AdminMiddleware
     {
         $user = Auth::user();
 
-        if (!$user || !$user->hasRole('Admin')) {
-            abort(403, 'Unauthorized access.');
+        if (!$user) {
+            abort(403, 'Unauthorized access - Please login');
+        }
+
+        if (!$user->hasRole('Admin')) {
+            abort(403, 'Unauthorized access - Admin role required');
         }
 
         return $next($request);
