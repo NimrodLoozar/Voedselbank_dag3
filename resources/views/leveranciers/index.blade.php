@@ -33,114 +33,61 @@
                         </div>
                     </div>
 
-                    <!-- Table -->
+                    {{-- CSRF-token toevoegen, heeft geen effect in een GET-view, maar kan geen kwaad --}}
+                    <form style="display:none;">@csrf</form>
+
+                    <!-- Leveranciers Table -->
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-                            <thead class="bg-gray-50 dark:bg-gray-700">
+                        <table class="min-w-full border border-gray-300 dark:border-gray-600">
+                            <thead class="bg-gray-100 dark:bg-gray-700">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Naam</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Contactpersoon</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Mobiel</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Leverancierenummer</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">LeverancierType</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Product Details</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Naam</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Contactpersoon</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">E-mail</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Mobiel</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Leveranciernummer</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">LeverancierType</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Product Details</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
-                                @forelse($leveranciers as $leverancier)
-                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
-                                            {{ $leverancier->naam }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                            {{ $leverancier->contact_persoon }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                            @if($leverancier->contacts->first())
-                                                {{ $leverancier->contacts->first()->email }}
-                                            @else
-                                                <span class="text-gray-400">-</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                            @if($leverancier->contacts->first())
-                                                {{ $leverancier->contacts->first()->mobiel }}
-                                            @else
-                                                <span class="text-gray-400">-</span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                                            {{ $leverancier->leverancier_nummer }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                @if($leverancier->leverancier_type == 'Bedrijf') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
-                                                @elseif($leverancier->leverancier_type == 'Instelling') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
-                                                @elseif($leverancier->leverancier_type == 'Overheid') bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200
-                                                @elseif($leverancier->leverancier_type == 'Particulier') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200
-                                                @elseif($leverancier->leverancier_type == 'Donor') bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200
-                                                @endif">
-                                                {{ $leverancier->leverancier_type }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="{{ route('leveranciers.show', $leverancier->id) }}" 
-                                               class="inline-flex items-center justify-center w-8 h-8 text-indigo-600 hover:text-indigo-900 hover:bg-indigo-100 rounded-full transition duration-200"
-                                               title="Product Details">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                                </svg>
-                                            </a>
+                                @if($leveranciers->count() === 0)
+                                    <tr>
+                                        <td colspan="7" style="background: #fff8dc; color: #856404; text-align: center; padding: 24px; font-size: 1.1rem; border-radius: 8px;">
+                                            Er zijn geen leveranciers bekent van het geselecteerde leverancierstype
                                         </td>
                                     </tr>
-                                @empty
-                                    @if(request('leverancier_type'))
-                                        <!-- Unhappy scenario: No results for selected filter -->
-                                        <tr>
-                                            <td colspan="7" class="px-6 py-8">
-                                                <div class="text-center">
-                                                    <div class="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-6">
-                                                        <div class="flex items-center justify-center mb-4">
-                                                            <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                                                            </svg>
-                                                        </div>
-                                                        <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-200 mb-2">
-                                                            Geen leveranciers gevonden
-                                                        </h3>
-                                                        <p class="text-yellow-700 dark:text-yellow-300 mb-4">
-                                                            Er zijn geen leveranciers bekent van het geselecteerde leverancierstype "{{ request('leverancier_type') }}".
-                                                        </p>
-                                                        <div class="flex justify-center space-x-3">
-                                                            <a href="{{ route('leveranciers.index') }}" 
-                                                               class="inline-flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition duration-200">
-                                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
-                                                                </svg>
-                                                                Terug
-                                                            </a>
-                                                            <a href="{{ route('/') }}" 
-                                                               class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition duration-200">
-                                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                                                                </svg>
-                                                                Home
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                @else
+                                    @foreach($leveranciers as $leverancier)
+                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-r border-gray-300 dark:border-gray-600">
+                                                {{ $leverancier->naam }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-r border-gray-300 dark:border-gray-600">
+                                                {{ $leverancier->contact_persoon }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-r border-gray-300 dark:border-gray-600">
+                                                {{ $leverancier->contacts[0]->email ?? '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-r border-gray-300 dark:border-gray-600">
+                                                {{ $leverancier->contacts[0]->mobiel ?? '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-r border-gray-300 dark:border-gray-600">
+                                                {{ $leverancier->leverancier_nummer }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 border-r border-gray-300 dark:border-gray-600">
+                                                {{ $leverancier->leverancier_type }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                                <a href="{{ route('leveranciers.show', $leverancier->id) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </a>
                                             </td>
                                         </tr>
-                                    @else
-                                        <!-- General empty state -->
-                                        <tr>
-                                            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                                                Geen leveranciers gevonden.
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforelse
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
