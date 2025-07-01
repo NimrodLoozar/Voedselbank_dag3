@@ -72,13 +72,21 @@
                                 <img src="{{ asset('img/favicon.ico') }}" alt="">
                             </button>
                         </div>
+
+
                         <div class="hidden lg:flex lg:gap-x-12">
-                            <a href="#About" class="text-sm/6 font-semibold text-gray-100">Over ons</a>
-                            <a href="#services" class="text-sm/6 font-semibold text-gray-100">Onze diensten</a>
-                            <a href="#Contact" class="text-sm/6 font-semibold text-gray-100">Contact</a>
-                            <a href="#volunteers" class="text-sm/6 font-semibold text-gray-100">Vrijwilligers</a>
-                            <a href="#FAQ" class="text-sm/6 font-semibold text-gray-100">FAQ</a>
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')" class="text-white">
+                                {{ __('Voedselpakketten') }}
+                            </x-nav-link>
+                            <!-- more -->
+                            
                         </div>
+
+
+
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center gap-x-3">
                             @auth
                                 <a href="{{ url('/dashboard') }}" class="text-sm/6 font-semibold text-gray-100">Dashboard
