@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto space-y-8">
 
             <!-- Titel -->
-            <h1 class="text-2xl text-green-700 font-semibold underline">Overzicht Voedselpakketten</h1>
+            <h1 class="text-green-700 dark:text-green-400 text-2xl font-semibold mb-4 underline">Overzicht Voedselpakketten</h1>
 
             <!-- Gezin Details -->
             <div class="bg-white shadow-md rounded border overflow-hidden w-full max-w-2xl">
@@ -65,7 +65,7 @@
 
             <!-- Navigatieknoppen -->
             <div class="flex justify-end gap-2">
-                <a href="{{ route('VoedselPakketten.index') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">terug</a>
+                <a href="{{ route('voedselpakketten.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">terug</a>
                 <a href="{{ route('dashboard') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">home</a>
             </div>
 
