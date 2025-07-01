@@ -15,12 +15,15 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')">
-                    {{ __('Voedselpakketten') }}
-                </x-nav-link>
+                    <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')">
+                        {{ __('Voorraad') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')">
+                        {{ __('Voedselpakketten') }}
+                    </x-nav-link>
 
 
-         </div>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
