@@ -10,7 +10,13 @@ class LeverancierController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Leverancier::with('contacts');
+        // Haal alleen leveranciers die producten hebben uit de product_per_leverancier tabel
+        $leverancierIdsWithProducts = \DB::table('product_per_leverancier')
+            ->distinct()
+            ->pluck('leverancier_id');
+        
+        $query = Leverancier::with('contacts')
+            ->whereIn('id', $leverancierIdsWithProducts);
         
         // Filter op leveranciertype als er een is geselecteerd
         if ($request->filled('leverancier_type')) {

@@ -20,5 +20,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => bcrypt('password'), // Ensure to hash the password
         ]);
+
+        // Call the seeders
+        $this->call([
+            ContactSeeder::class,
+            LeverancierSeeder::class,
+            ContactPerLeverancierSeeder::class,
+            CategorieSeeder::class, // Moet vóór ProductSeeder!
+            ProductSeeder::class, // Moet vóór ProductPerLeverancierSeeder!
+            ProductPerLeverancierSeeder::class,
+        ]);
     }
 }

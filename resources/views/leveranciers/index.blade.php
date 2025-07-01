@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-green-600 dark:text-green-400 leading-tight underline">
             {{ __('Overzicht Leveranciers') }}
         </h2>
     </x-slot>
@@ -90,18 +90,58 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
-                                            Geen leveranciers gevonden.
-                                        </td>
-                                    </tr>
+                                    @if(request('leverancier_type'))
+                                        <!-- Unhappy scenario: No results for selected filter -->
+                                        <tr>
+                                            <td colspan="7" class="px-6 py-8">
+                                                <div class="text-center">
+                                                    <div class="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-6">
+                                                        <div class="flex items-center justify-center mb-4">
+                                                            <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+                                                            Geen leveranciers gevonden
+                                                        </h3>
+                                                        <p class="text-yellow-700 dark:text-yellow-300 mb-4">
+                                                            Er zijn geen leveranciers bekent van het geselecteerde leverancierstype "{{ request('leverancier_type') }}".
+                                                        </p>
+                                                        <div class="flex justify-center space-x-3">
+                                                            <a href="{{ route('leveranciers.index') }}" 
+                                                               class="inline-flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition duration-200">
+                                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path>
+                                                                </svg>
+                                                                Terug
+                                                            </a>
+                                                            <a href="{{ route('/') }}" 
+                                                               class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition duration-200">
+                                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                                                </svg>
+                                                                Home
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <!-- General empty state -->
+                                        <tr>
+                                            <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                                                Geen leveranciers gevonden.
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Home Button -->
-                    <div class="mt-6">
+                    <div class="mt-6 flex justify-end">
                         <a href="{{ route('/') }}" 
                            class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
