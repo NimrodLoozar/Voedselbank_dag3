@@ -80,16 +80,8 @@
 
                             <div class="grid grid-cols-3 gap-4 items-center">
                                 <label for="type_persoon" class="text-sm font-medium text-gray-700 dark:text-gray-300">Type Persoon</label>
-                                <div class="col-span-2">
-                                    <select name="type_persoon" id="type_persoon" 
-                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                        <option value="Klant" {{ old('type_persoon', $vertegenwoordiger ? $vertegenwoordiger->type_persoon : '') == 'Klant' ? 'selected' : '' }}>Klant</option>
-                                        <option value="Vrijwilliger" {{ old('type_persoon', $vertegenwoordiger ? $vertegenwoordiger->type_persoon : '') == 'Vrijwilliger' ? 'selected' : '' }}>Vrijwilliger</option>
-                                        <option value="Medewerker" {{ old('type_persoon', $vertegenwoordiger ? $vertegenwoordiger->type_persoon : '') == 'Medewerker' ? 'selected' : '' }}>Medewerker</option>
-                                    </select>
-                                    @error('type_persoon')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-600 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $vertegenwoordiger ? $vertegenwoordiger->type_persoon : 'Onbekend' }}
                                 </div>
                             </div>
 
