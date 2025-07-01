@@ -76,12 +76,14 @@
                                 </svg>
                             </button>
                         </div>
+
+
                         <div class="hidden lg:flex lg:gap-x-12">
-                            <a href="#About" class="text-sm/6 font-semibold text-gray-100">Over ons</a>
-                            <a href="#services" class="text-sm/6 font-semibold text-gray-100">Onze diensten</a>
-                            <a href="#Contact" class="text-sm/6 font-semibold text-gray-100">Contact</a>
-                            <a href="#volunteers" class="text-sm/6 font-semibold text-gray-100">Vrijwilligers</a>
-                            <a href="#FAQ" class="text-sm/6 font-semibold text-gray-100">FAQ</a>
+                            <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')" class="text-white">
+                                {{ __('Voedselpakketten') }}
+                            </x-nav-link>
+                            <!-- more -->
+
                             <!-- Features dropdown -->
                             <div class="relative" x-data="{ open: false }">
                                 <button @click="open = !open" @click.away="open = false"
@@ -111,6 +113,9 @@
                                 </div>
                             </div>
                         </div>
+
+
+
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center gap-x-3">
                             <div class="mr-4">
                                 <x-theme-toggle />

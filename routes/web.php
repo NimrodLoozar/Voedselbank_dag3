@@ -4,11 +4,20 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\VoedselpakketController;
+use Illuminate\Support\Facades\DB;
+
 
 Route::get('/', function () {
     $isMaintenanceMode = Setting::isMaintenanceMode();
     return view('welcome', compact('isMaintenanceMode'));
 })->name('/');
+
+Route::get('/voedselpakketten', [VoedselpakketController::class, 'index'])->name('voedselpakketten.index');
+Route::get('/voedselpakketten/show/{voedselpakket}', [VoedselpakketController::class, 'show'])->name('voedselpakketten.show');
+Route::get('/voedselpakketten/{voedselpakket}/edit', [VoedselpakketController::class, 'edit'])->name('voedselpakketten.edit');
+Route::post('/voedselpakketten', [VoedselpakketController::class, 'store'])->name('voedselpakketten.store');
+Route::patch('/voedselpakketten/{voedselpakket}', [VoedselpakketController::class, 'update'])->name('voedselpakketten.update');
 
 Route::get('/dashboard', function () {
     $isMaintenanceMode = Setting::isMaintenanceMode();

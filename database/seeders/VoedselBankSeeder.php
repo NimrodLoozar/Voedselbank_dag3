@@ -16,7 +16,7 @@ use Database\Seeders\GebruikerSeeder;
 use Database\Seeders\MagazijnSeeder;
 use Database\Seeders\ProductSeeder;
 
-class DatabaseSeeder extends Seeder
+class VoedselbankSeeder extends Seeder
 {
     /**
      * Seed the application's database.
