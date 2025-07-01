@@ -62,13 +62,35 @@ class VoedselpakketController extends Controller
 
     public function edit(Voedselpakket $voedselpakket)
     {
-        $gezinnen = Gezin::all();
-        $producten = Product::where('status', 'OpVoorraad')->get();
-        return view('voedselpakketten.edit', compact('voedselpakket', 'gezinnen', 'producten'));
+        // Load relationships for the view
+        $voedselpakket->load(['gezin', 'producten']);
+        $pakket = $voedselpakket; // Alias to match view variable
+        
+        return view('voedselpakketten.edit', compact('pakket', 'voedselpakket'));
     }
 
     public function update(Request $request, Voedselpakket $voedselpakket)
     {
+        // Validate only the status if it's a simple status update
+        if ($request->has('status') && count($request->all()) <= 3) { // _token, _method, status
+            $request->validate([
+                'status' => 'required|in:Uitgereikt,NietUitgereikt,NietMeerIngeschreven'
+            ]);
+            
+            $updateData = ['status' => $request->status];
+            
+            // Set datum_uitgifte to today if status is changed to 'Uitgereikt'
+            if ($request->status === 'Uitgereikt') {
+                $updateData['datum_uitgifte'] = now()->format('Y-m-d');
+            }
+            
+            $voedselpakket->update($updateData);
+            
+            return redirect()->back()
+                ->with('success', 'De wijziging is doorgevoerd');
+        }
+        
+        // Full validation for complete form updates
         $request->validate([
             'gezin_id' => 'required|exists:gezinnen,id',
             'pakket_nummer' => 'required|integer',
