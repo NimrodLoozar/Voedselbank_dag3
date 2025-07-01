@@ -6,6 +6,8 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('/') }}">
+                        <img src="{{ asset('img/4965498.jpg') }}" alt="Logo"
+                            class="block h-9 w-auto mr-2">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
@@ -19,7 +21,7 @@
                     <x-nav-link :href="route('klanten.index')" :active="request()->routeIs('klanten.*')">
                         {{ __('Klanten') }}
                     </x-nav-link>
-                        <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')">
+                    <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')">
                         {{ __('Voorraad') }}
                     </x-nav-link>
                     <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')">
