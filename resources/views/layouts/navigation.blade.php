@@ -15,23 +15,14 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('foodstorage.index')" :active="request()->routeIs('foodstorage.*')">
-                        {{ __('Voorraad beheer') }}
+                    <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')">
+                        {{ __('Voorraad') }}
                     </x-nav-link>
-                    @if (auth()->user() && auth()->user()->hasRole('Admin'))
-                        <x-nav-link :href="route('customers.index')"  :active="request()->routeIs('test')">
-                            {{ __('Klanten') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
-                            {{ __('Suppliers') }}
-                        </x-nav-link>
-                    @endif
+                    <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')">
+                        {{ __('Voedselpakketten') }}
+                    </x-nav-link>
 
-                    @if (auth()->user() && auth()->user()->hasRole('Admin'))
-    <x-nav-link :href="route('food_packages.index')" :active="request()->routeIs('food_packages.index')">
-        {{ __('Voedselpakketten') }}
-    </x-nav-link>
-@endif
+
                 </div>
             </div>
 
@@ -41,7 +32,6 @@
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->username }}</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -98,24 +88,10 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            
-            <x-responsive-nav-link :href="route('foodstorage.index')" :active="request()->routeIs('foodstorage.*')">
-                {{ __('Food Storage') }}
-            </x-responsive-nav-link>
-
-            @if (auth()->user() && auth()->user()->hasRole('Admin'))
-                <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customer.index')">
-                    {{ __('Klanten') }}
-                </x-responsive-nav-link>
-            @endif
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
