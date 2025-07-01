@@ -25,8 +25,7 @@
 
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-6">Vertegenwoordiger</h3>
-                        
+                
                         <div class="space-y-4 max-w-4xl">
                             <div class="grid grid-cols-3 gap-4 items-center">
                                 <label for="vertegenwoordiger_voornaam" class="text-sm font-medium text-gray-700 dark:text-gray-300">Voornaam</label>

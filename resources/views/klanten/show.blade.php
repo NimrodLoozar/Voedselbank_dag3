@@ -21,7 +21,6 @@
             <!-- Klant Details - Vertegenwoordiger -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-6">Vertegenwoordiger</h3>
                     @if($vertegenwoordiger)
                         <div class="space-y-0 max-w-4xl">
                             <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
