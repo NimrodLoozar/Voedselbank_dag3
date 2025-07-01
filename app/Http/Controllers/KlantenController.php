@@ -79,7 +79,7 @@ class KlantenController extends Controller
             'email' => 'nullable|email',
             'mobiel' => ['nullable', 'string', 'max:20', function ($attribute, $value, $fail) {
                 if ($value && !Klanten::isValidDutchMobile($value)) {
-                    $fail('Het mobiele nummer moet een geldig Nederlands mobiel nummer zijn (bijv. 06xxxxxxxx of +316xxxxxxxx)');
+                    $fail('Het mobiele nummer moet een geldig Nederlands mobiel nummer zijn (bijv. 06xxxxxxxx of +31 6xxxxxxxx)');
                 }
             }],
             'straat' => 'nullable|string|max:255',

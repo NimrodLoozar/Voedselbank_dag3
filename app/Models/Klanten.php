@@ -28,21 +28,21 @@ class Klanten extends Model
             return true; // Allow empty mobile numbers
         }
         
-        // Clean the input: remove spaces, dashes, and parentheses
-        $cleanMobile = preg_replace('/[\s\-\(\)]/', '', $mobile);
+        // Trim whitespace
+        $mobile = trim($mobile);
         
         // Dutch mobile number patterns:
         // 06XXXXXXXX (national format)
-        // +316XXXXXXXX (international format)
-        // 0031-6XXXXXXXX (alternative international format)
+        // +31 6XXXXXXXX (international format with space)
+        // 0031 6XXXXXXXX (alternative international format with space)
         $patterns = [
-            '/^06[0-9]{8}$/',           // 06XXXXXXXX
-            '/^\+316[0-9]{8}$/',        // +316XXXXXXXX
-            '/^00316[0-9]{8}$/',        // 00316XXXXXXXX
+            '/^06[0-9]{8}$/',                    // 06XXXXXXXX
+            '/^\+31\s6[0-9]{8}$/',               // +31 6XXXXXXXX (with space)
+            '/^0031\s6[0-9]{8}$/',               // 0031 6XXXXXXXX (with space)
         ];
         
         foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $cleanMobile)) {
+            if (preg_match($pattern, $mobile)) {
                 return true;
             }
         }

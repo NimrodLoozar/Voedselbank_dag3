@@ -184,9 +184,9 @@
                                 <div class="col-span-2">
                                     <input type="tel" name="mobiel" id="mobiel" 
                                            value="{{ old('mobiel', $contact ? $contact->mobiel : '') }}"
-                                           pattern="^(06[0-9]{8}|\+316[0-9]{8}|00316[0-9]{8})$"
-                                           placeholder="Bijv. 06xxxxxxxx of +316xxxxxxxx"
-                                           title="Voer een geldig Nederlands mobiel nummer in (bijv. 06xxxxxxxx of +316xxxxxxxx)"
+                                           pattern="^(06[0-9]{8}|\+31\s6[0-9]{8}|0031\s6[0-9]{8})$"
+                                           placeholder="Bijv. 06xxxxxxxx of +31 6xxxxxxxx"
+                                           title="Voer een geldig Nederlands mobiel nummer in (bijv. 06xxxxxxxx of +31 6xxxxxxxx)"
                                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('mobiel') border-red-500 @enderror">
                                     @error('mobiel')
                                         <p class="mt-1 text-sm text-red-600 flex items-center">
@@ -197,7 +197,7 @@
                                         </p>
                                     @enderror
                                     <p class="mt-1 text-xs text-gray-500">
-                                        Voer een Nederlands mobiel nummer in (bijv. 06xxxxxxxx of +316xxxxxxxx)
+                                        Voer een Nederlands mobiel nummer in (bijv. 06xxxxxxxx of +31 6xxxxxxxx)
                                     </p>
                                 </div>
                             </div>
@@ -249,28 +249,29 @@
 
                 // Format mobile number as user types
                 mobileInput.addEventListener('input', function() {
-                    let value = this.value.replace(/\D/g, ''); // Remove non-digits
+                    let value = this.value;
                     
-                    // Format based on the pattern
-                    if (value.startsWith('316') && value.length === 11) {
-                        this.value = '+' + value;
-                    } else if (value.startsWith('06') && value.length === 10) {
-                        this.value = value;
-                    } else if (value.startsWith('00316') && value.length === 13) {
-                        this.value = value;
+                    // If user types +31 followed by 6, add a space
+                    if (value === '+316') {
+                        this.value = '+31 6';
+                    }
+                    // If user types 0031 followed by 6, add a space  
+                    else if (value === '00316') {
+                        this.value = '0031 6';
                     }
                 });
             }
 
             function isValidDutchMobile(mobile) {
-                const cleanMobile = mobile.replace(/[\s\-\(\)]/g, '');
+                // Trim whitespace
+                mobile = mobile.trim();
                 const patterns = [
-                    /^06[0-9]{8}$/,     // 06XXXXXXXX
-                    /^\+316[0-9]{8}$/,  // +316XXXXXXXX
-                    /^00316[0-9]{8}$/   // 00316XXXXXXXX
+                    /^06[0-9]{8}$/,        // 06XXXXXXXX
+                    /^\+31\s6[0-9]{8}$/,   // +31 6XXXXXXXX (with space)
+                    /^0031\s6[0-9]{8}$/    // 0031 6XXXXXXXX (with space)
                 ];
                 
-                return patterns.some(pattern => pattern.test(cleanMobile));
+                return patterns.some(pattern => pattern.test(mobile));
             }
 
             function showValidFeedback() {
