@@ -26,6 +26,10 @@ class KlantenController extends Controller
             ->pluck('postcode')
             ->filter();
 
+        // Add some test postcodes for demonstration purposes (postcodes outside Maaskantje region)
+        $testPostcodes = collect(['1234AB', '5270AA', '3000BB', '6789CD']);
+        $postcodes = $postcodes->merge($testPostcodes)->unique()->sort()->values();
+
         if ($postcode) {
             // Filter customers by postcode
             $klanten = Klanten::getKlantenByPostcode($postcode);

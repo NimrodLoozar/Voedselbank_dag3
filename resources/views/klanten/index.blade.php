@@ -16,14 +16,24 @@
                             <label for="postcode" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Selecteer Postcode
                             </label>
-                            <select name="postcode" id="postcode" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <select name="postcode" id="postcode" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" onchange="toggleManualInput()">
                                 <option value="">-- Alle postcodes --</option>
                                 @foreach($postcodes as $pc)
                                     <option value="{{ $pc }}" {{ $postcode == $pc ? 'selected' : '' }}>
                                         {{ $pc }}
                                     </option>
                                 @endforeach
+                                <option value="custom" {{ $postcode && !in_array($postcode, $postcodes->toArray()) ? 'selected' : '' }}>-- Voer handmatig in --</option>
                             </select>
+                        </div>
+                        <div class="flex-1 min-w-64" id="manual-input" style="display: {{ $postcode && !in_array($postcode, $postcodes->toArray()) ? 'block' : 'none' }};">
+                            <label for="manual_postcode" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Voer Postcode In
+                            </label>
+                            <input type="text" name="manual_postcode" id="manual_postcode" 
+                                   value="{{ $postcode && !in_array($postcode, $postcodes->toArray()) ? $postcode : '' }}"
+                                   placeholder="bijv. 1234AB of 5270AA"
+                                   class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         </div>
                         <div class="flex gap-2">
                             <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -186,4 +196,38 @@
             @endif
         </div>
     </div>
+
+    <script>
+        function toggleManualInput() {
+            const select = document.getElementById('postcode');
+            const manualDiv = document.getElementById('manual-input');
+            const manualInput = document.getElementById('manual_postcode');
+            
+            if (select.value === 'custom') {
+                manualDiv.style.display = 'block';
+                manualInput.focus();
+            } else {
+                manualDiv.style.display = 'none';
+                manualInput.value = '';
+            }
+        }
+
+        // Handle form submission to use manual input when selected
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const select = document.getElementById('postcode');
+            const manualInput = document.getElementById('manual_postcode');
+            
+            if (select.value === 'custom' && manualInput.value) {
+                // Create a hidden input with the manual postcode value
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'postcode';
+                hiddenInput.value = manualInput.value;
+                this.appendChild(hiddenInput);
+                
+                // Remove the select name to avoid conflicts
+                select.name = '';
+            }
+        });
+    </script>
 </x-app-layout>
