@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KlantenController;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MaintenanceController;
@@ -31,6 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Klanten routes
+    Route::get('/klanten', [KlantenController::class, 'index'])->name('klanten.index');
+    Route::get('/klanten/{gezin}', [KlantenController::class, 'show'])->name('klanten.show');
+    Route::get('/klanten/{gezin}/edit', [KlantenController::class, 'edit'])->name('klanten.edit');
+    Route::put('/klanten/{gezin}', [KlantenController::class, 'update'])->name('klanten.update');
 
     Route::get('/voedselpakketten', [VoedselpakketController::class, 'index'])->name('voedselpakketten.index');
     Route::get('/voedselpakketten/show/{voedselpakket}', [VoedselpakketController::class, 'show'])->name('voedselpakketten.show');
