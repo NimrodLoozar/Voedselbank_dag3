@@ -5,25 +5,47 @@ namespace App\Http\Controllers;
 use App\Models\Leverancier;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LeverancierController extends Controller
 {
     public function index(Request $request)
     {
-        // Haal alleen leveranciers die producten hebben uit de product_per_leverancier tabel
-        $leverancierIdsWithProducts = \DB::table('product_per_leverancier')
-            ->distinct()
-            ->pluck('leverancier_id');
+        // Gebruik stored procedure voor het ophalen van leveranciers
+        $leverancierType = $request->get('leverancier_type');
+        $leverancierId = $request->get('leverancier_id');
         
-        $query = Leverancier::with('contacts')
-            ->whereIn('id', $leverancierIdsWithProducts);
+        $rawData = DB::select('CALL GetLeveranciersWithContacts(?, ?)', [$leverancierType, $leverancierId]);
         
-        // Filter op leveranciertype als er een is geselecteerd
-        if ($request->filled('leverancier_type')) {
-            $query->where('leverancier_type', $request->leverancier_type);
-        }
-        
-        $leveranciers = $query->orderBy('naam')->get();
+        // Groepeer de data per leverancier
+        $leveranciers = collect($rawData)->groupBy('leverancier_id')->map(function ($rows) {
+            $firstRow = $rows->first();
+            
+            return (object) [
+                'id' => $firstRow->leverancier_id,
+                'naam' => $firstRow->leverancier_naam,
+                'contact_persoon' => $firstRow->contact_persoon,
+                'leverancier_nummer' => $firstRow->leverancier_nummer,
+                'leverancier_type' => $firstRow->leverancier_type,
+                'created_at' => $firstRow->leverancier_created_at,
+                'updated_at' => $firstRow->leverancier_updated_at,
+                'contacts' => $rows->filter(function ($row) {
+                    return $row->contact_id !== null;
+                })->unique('contact_id')->map(function ($row) {
+                    return (object) [
+                        'id' => $row->contact_id,
+                        'straat' => $row->straat,
+                        'huisnummer' => $row->huisnummer,
+                        'toevoeging' => $row->toevoeging,
+                        'postcode' => $row->postcode,
+                        'woonplaats' => $row->woonplaats,
+                        'email' => $row->email,
+                        'mobiel' => $row->mobiel,
+                        'volledig_adres' => $row->volledig_adres
+                    ];
+                })->values()
+            ];
+        })->values();
         
         return view('leveranciers.index', compact('leveranciers'));
     }
@@ -53,10 +75,48 @@ class LeverancierController extends Controller
             ->with('success', 'Leverancier succesvol aangemaakt.');
     }
 
-    public function show(Leverancier $leverancier)
+    public function show($id)
     {
-        $leverancier->load(['contacts', 'producten']);
-        return view('leveranciers.show', compact('leverancier'));
+        // Gebruik stored procedure voor specifieke leverancier
+        $rawData = DB::select('CALL GetLeveranciersWithContacts(?, ?)', [null, $id]);
+        
+        if (empty($rawData)) {
+            abort(404, 'Leverancier niet gevonden');
+        }
+        
+        // Haal producten op via normale Eloquent relatie
+        $leverancierModel = Leverancier::with('producten')->find($id);
+        
+        // Verwerk data voor één leverancier
+        $firstRow = $rawData[0];
+        $leverancierData = (object) [
+            'id' => $firstRow->leverancier_id,
+            'naam' => $firstRow->leverancier_naam,
+            'contact_persoon' => $firstRow->contact_persoon,
+            'leverancier_nummer' => $firstRow->leverancier_nummer,
+            'leverancier_type' => $firstRow->leverancier_type,
+            'created_at' => $firstRow->leverancier_created_at,
+            'updated_at' => $firstRow->leverancier_updated_at,
+            'contacts' => collect($rawData)->filter(function ($row) {
+                return $row->contact_id !== null;
+            })->unique('contact_id')->map(function ($row) {
+                return (object) [
+                    'id' => $row->contact_id,
+                    'straat' => $row->straat,
+                    'huisnummer' => $row->huisnummer,
+                    'toevoeging' => $row->toevoeging,
+                    'postcode' => $row->postcode,
+                    'woonplaats' => $row->woonplaats,
+                    'email' => $row->email,
+                    'mobiel' => $row->mobiel,
+                    'telefoon' => $row->mobiel, // Voor compatibility
+                    'volledig_adres' => $row->volledig_adres
+                ];
+            })->values(),
+            'producten' => $leverancierModel ? $leverancierModel->producten : collect()
+        ];
+        
+        return view('leveranciers.show', ['leverancier' => $leverancierData]);
     }
 
     public function edit(Leverancier $leverancier)
