@@ -43,6 +43,9 @@
                         </svg>
                     </a>
                 </div>
+                <br>
+                <br>
+                <img src="{{ asset('img/food-donation_8880376.png') }}" alt="Food Donation" class="w-16 h-16 mt-4">
             </div>
         </div>
         <div class="text-center mt-8 text-gray-600 dark:text-gray-100">
