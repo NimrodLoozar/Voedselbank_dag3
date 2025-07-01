@@ -73,12 +73,9 @@ class KlantenController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'gezin_naam' => 'required|string|max:255',
-            'aantal_volwassenen' => 'required|integer|min:0',
-            'aantal_kinderen' => 'required|integer|min:0',
-            'aantal_babys' => 'required|integer|min:0',
             'vertegenwoordiger_voornaam' => 'required|string|max:255',
             'vertegenwoordiger_achternaam' => 'required|string|max:255',
+            'vertegenwoordiger_tussenvoegsel' => 'nullable|string|max:255',
             'email' => 'nullable|email',
             'mobiel' => ['nullable', 'string', 'max:20', function ($attribute, $value, $fail) {
                 if ($value && !Klanten::isValidDutchMobile($value)) {
@@ -111,15 +108,6 @@ class KlantenController extends Controller
             }
         }
         
-        // Update gezin information
-        $gezin->update([
-            'naam' => $request->gezin_naam,
-            'aantal_volwassenen' => $request->aantal_volwassenen,
-            'aantal_kinderen' => $request->aantal_kinderen,
-            'aantal_babys' => $request->aantal_babys,
-            'totaal_aantal_personen' => $request->aantal_volwassenen + $request->aantal_kinderen + $request->aantal_babys,
-        ]);
-
         // Update vertegenwoordiger
         $vertegenwoordiger = $gezin->personen->where('is_vertegenwoordiger', true)->first();
         if ($vertegenwoordiger) {
@@ -144,6 +132,6 @@ class KlantenController extends Controller
         }
 
         return redirect()->route('klanten.show', $gezin)
-            ->with('success', 'Klantgegevens zijn succesvol bijgewerkt!');
+            ->with('success', 'De klantgegevens zijn gewijzigd');
     }
 }

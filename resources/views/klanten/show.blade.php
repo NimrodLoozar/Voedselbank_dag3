@@ -189,4 +189,15 @@
             @endif
         </div>
     </div>
+
+    @if (session('success'))
+    <!-- Auto-redirect script after success message -->
+    <script>
+        // Auto-redirect after 3 seconds when success message is shown
+        setTimeout(function() {
+            // Reload the current page to clear the success message
+            window.location.reload();
+        }, 3000);
+    </script>
+    @endif
 </x-app-layout>
