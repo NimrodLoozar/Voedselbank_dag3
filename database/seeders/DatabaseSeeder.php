@@ -20,5 +20,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => bcrypt('password'), // Ensure to hash the password
         ]);
+
+        // Seed base entities first
+        $this->call([
+            GezinSeeder::class,
+            ContactSeeder::class,
+            ContactPerGezinSeeder::class,
+            PersoonSeeder::class,
+        ]);
     }
+
 }
