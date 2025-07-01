@@ -55,7 +55,7 @@
                 <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600"></div>
             </div>
 
-            <header class="absolute inset-x-0 top-0 z-50">
+            <header class="absolute inset-x-0 top-0 z-50" x-data="{ mobileMenuOpen: false }">
                 @if (Route::has('login'))
                     <nav class="flex items-center justify-between p-6 lg:px-8 bg-gray-900/75" aria-label="Global">
                         <div class="flex lg:flex-1">
@@ -65,31 +65,36 @@
                             </a>
                         </div>
                         <div class="flex lg:hidden">
-                            <button type="button"
+                            <button type="button" @click="mobileMenuOpen = true"
                                 class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-100"
                                 aria-label="Open main menu">
                                 <span class="sr-only">Open main menu</span>
-                                <img src="{{ asset('img/favicon.ico') }}" alt="">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
                             </button>
                         </div>
 
 
-                        <div class="hidden lg:flex lg:gap-x-12">
+                        <div class="hidden lg:flex lg:gap-x-6">
                             <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')" class="text-white">
                                 {{ __('Voedselpakketten') }}
                             </x-nav-link>
-                            <!-- more -->
-                            
+                            <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')" class="text-white">
+                                {{ __('Voorraad') }}
+                            </x-nav-link>
                         </div>
 
-
-
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center gap-x-3">
+                            <div class="mr-4">
+                                <x-theme-toggle />
+                            </div>
                             @auth
                                 <a href="{{ url('/dashboard') }}" class="text-sm/6 font-semibold text-gray-100">Dashboard
                                     <span aria-hidden="true">&rarr;</span>
                                 </a>
-                                {{-- <x-theme-toggle /> --}}
                             @else
                                 <div>
                                     <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-gray-100">Log in
@@ -101,24 +106,28 @@
                                         </a>
                                     @endif
                                 </div>
-                                {{-- <x-theme-toggle /> --}}
                             @endauth
                         </div>
                     </nav>
                 @endif
                 <!-- Mobile menu, show/hide based on menu open state. -->
-                <div class="lg:hidden" role="dialog" aria-modal="true">
+                <div x-show="mobileMenuOpen" class="lg:hidden" role="dialog" aria-modal="true"
+                    x-transition:enter="duration-300 ease-out" x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100" x-transition:leave="duration-200 ease-in"
+                    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
                     <!-- Background backdrop, show/hide based on slide-over state. -->
-                    <div class="fixed inset-0 z-50"></div>
-                    <div
-                        class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                    <div class="fixed inset-0 z-50 bg-black bg-opacity-25" @click="mobileMenuOpen = false"></div>
+                    <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+                        x-transition:enter="duration-300 ease-out" x-transition:enter-start="translate-x-full"
+                        x-transition:enter-end="translate-x-0" x-transition:leave="duration-200 ease-in"
+                        x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
                         <div class="flex items-center justify-between">
                             <a href="#" class="-m-1.5 p-1.5">
                                 <span class="sr-only">Your Company</span>
                                 <img class="h-8 w-auto" src="{{ asset('img/favicon.ico') }}" alt="">
                             </a>
-                            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700"
-                                aria-label="Close menu">
+                            <button type="button" @click="mobileMenuOpen = false"
+                                class="-m-2.5 rounded-md p-2.5 text-gray-700" aria-label="Close menu">
                                 <span class="sr-only">Close menu</span>
                                 <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" aria-hidden="true" data-slot="icon">
@@ -141,6 +150,38 @@
                                         class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-700 hover:bg-gray-900">Vrijwilligers</a>
                                     <a href="#FAQ"
                                         class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-700 hover:bg-gray-900">FAQ</a>
+                                    <!-- Features submenu -->
+                                    <div x-data="{ open: false }" class="-mx-3">
+                                        <button @click="open = !open"
+                                            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-700 hover:bg-gray-50">
+                                            <span>Features</span>
+                                            <svg class="h-5 w-5 transition-transform duration-150"
+                                                :class="{ 'rotate-180': open }" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <div x-show="open" x-transition:enter="transition ease-out duration-100"
+                                            x-transition:enter-start="transform opacity-0 scale-95"
+                                            x-transition:enter-end="transform opacity-100 scale-100"
+                                            x-transition:leave="transition ease-in duration-75"
+                                            x-transition:leave-start="transform opacity-100 scale-100"
+                                            x-transition:leave-end="transform opacity-0 scale-95"
+                                            class="ml-4 mt-2 space-y-2">
+                                            <a href="{{ route('inventory.overview') }}"
+                                                class="block rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                                                Voorraad
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-6 border-t border-gray-200">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium text-gray-700">Theme</span>
+                                        <x-theme-toggle />
+                                    </div>
                                 </div>
                                 <div class="mt-2 lg:flex lg:flex-1 lg:justify-end">
                                     @auth
