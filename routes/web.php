@@ -8,6 +8,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\VoedselpakketController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LeverancierController;
+use App\Http\Controllers\ProductController;
 
 
 Route::get('/', function () {
@@ -48,6 +49,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('leveranciers', LeverancierController::class);
 
+    // Voeg deze custom route toe voor product-edit via leverancier-edit view
+    Route::get('/leveranciers/{leverancier}/product/{product}/edit', [LeverancierController::class, 'editProduct'])->name('leveranciers.product.edit');
+    Route::put('/leveranciers/{leverancier}/product/{product}', [LeverancierController::class, 'updateProduct'])->name('leveranciers.product.update');
+
+    Route::resource('producten', ProductController::class)->only(['edit', 'update']);
 });
 
 Route::post('/toggle-maintenance', [MaintenanceController::class, 'toggle'])->name('toggle.maintenance');

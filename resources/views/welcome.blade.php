@@ -85,6 +85,9 @@
                             <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')" class="text-white">
                                 {{ __('Voorraad') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('leveranciers.index')" :active="request()->routeIs('leveranciers.index')" class="text-white">
+                                {{ __('Leveranciers') }}
+                            </x-nav-link>
                         </div>
 
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center gap-x-3">

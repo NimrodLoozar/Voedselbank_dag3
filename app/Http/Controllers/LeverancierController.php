@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Leverancier;
 use App\Models\Contact;
+use App\Models\Product;
+use App\Models\ProductPerLeverancier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -215,5 +217,53 @@ class LeverancierController extends Controller
         // Redirect naar het overzicht met een succesbericht
         return redirect()->route('leveranciers.index')
             ->with('success', 'Leverancier succesvol verwijderd.');
+    }
+
+    /**
+     * Toon het formulier voor het bewerken van de houdbaarheidsdatum van een product
+     * 
+     * @param Leverancier $leverancier - De leverancier waartoe het product behoort
+     * @param Product $product - Het product waarvan de houdbaarheidsdatum bewerkt wordt
+     * @return \Illuminate\View\View
+     */
+    public function editProduct(Leverancier $leverancier, Product $product)
+    {
+        // Haal houdbaarheidsdatum uit het product zelf, niet uit de pivot
+        return view('leveranciers.edit', compact('leverancier', 'product'));
+    }
+
+    /**
+     * Werk de houdbaarheidsdatum van een product bij in de database
+     * 
+     * @param Request $request - HTTP request met bijgewerkte product gegevens
+     * @param Leverancier $leverancier - De leverancier waartoe het product behoort
+     * @param Product $product - Het product waarvan de houdbaarheidsdatum bijgewerkt wordt
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateProduct(Request $request, Leverancier $leverancier, Product $product)
+    {
+        $request->validate([
+            'houdbaarheidsdatum' => 'required|date',
+        ]);
+
+        $oudeDatum = $product->houdbaarheidsdatum ? \Carbon\Carbon::parse($product->houdbaarheidsdatum) : null;
+        $nieuweDatum = \Carbon\Carbon::parse($request->houdbaarheidsdatum);
+
+        // Als er al een datum is, check of verlenging maximaal 7 dagen is
+        if ($oudeDatum && $nieuweDatum->gt($oudeDatum)) {
+            $verschil = $oudeDatum->diffInDays($nieuweDatum);
+            if ($verschil > 7) {
+                return redirect()->back()
+                    ->with('error', 'De houdbaarheidsdatum is niet gewijzigd. De houdbaarheidsdatum mag met maximaal 7 dagen worden verlengd')
+                    ->withInput();
+            }
+        }
+
+        $product->houdbaarheidsdatum = $nieuweDatum->format('Y-m-d');
+        $product->save();
+
+        // Wireframe-05: altijd deze melding bij succes
+        return redirect()->route('leveranciers.show', $leverancier->id)
+            ->with('success', 'De houdbaarbaarheidsdatum is gewijzigd');
     }
 }
