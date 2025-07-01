@@ -1,20 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Klant Details') }} - {{ $gezin->naam }}
-            </h2>
-            <div class="flex space-x-2">
-                <a href="{{ route('klanten.edit', $gezin) }}" 
-                   class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md shadow-sm">
-                    Bewerken
-                </a>
-                <a href="{{ route('klanten.index') }}" 
-                   class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md shadow-sm">
-                    Terug naar Overzicht
-                </a>
-            </div>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Klant Details') }} - {{ $vertegenwoordiger->voornaam }} {{ $vertegenwoordiger->tussenvoegsel }} {{ $vertegenwoordiger->achternaam }}
+        </h2>
     </x-slot>
 
     <div class="py-12">
@@ -30,149 +18,120 @@
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Gezin Informatie -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Gezin Informatie</h3>
-                        <dl class="space-y-3">
-                            <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Gezinnaam</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $gezin->naam }}</dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Gezinscode</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $gezin->code }}</dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Omschrijving</dt>
-                                <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $gezin->omschrijving ?: 'Geen omschrijving' }}</dd>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Volwassenen</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $gezin->aantal_volwassenen }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Kinderen</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $gezin->aantal_kinderen }}</dd>
+            <!-- Klant Details - Vertegenwoordiger -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-6">Vertegenwoordiger</h3>
+                    @if($vertegenwoordiger)
+                        <div class="space-y-4 max-w-4xl">
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Voornaam</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $vertegenwoordiger->voornaam ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Baby's</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $gezin->aantal_babys }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Totaal Personen</dt>
-                                    <dd class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $gezin->totaal_aantal_personen }}</dd>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Tussenvoegsel</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $vertegenwoordiger->tussenvoegsel ?? '~~~~~' }}
                                 </div>
                             </div>
-                        </dl>
-                    </div>
-                </div>
-
-                <!-- Vertegenwoordiger -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Vertegenwoordiger</h3>
-                        @if($vertegenwoordiger)
-                            <dl class="space-y-3">
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Naam</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $vertegenwoordiger->volledige_naam }}</dd>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Achternaam</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $vertegenwoordiger->achternaam ?? '~~~~~' }}
                                 </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Geboortedatum</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $vertegenwoordiger->geboortedatum->format('d-m-Y') }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Type</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">{{ $vertegenwoordiger->type_persoon }}</dd>
-                                </div>
-                            </dl>
-                        @else
-                            <p class="text-sm text-gray-500 dark:text-gray-400 italic">Geen vertegenwoordiger gevonden</p>
-                        @endif
-                    </div>
-                </div>
-
-                <!-- Contact Informatie -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Contact Informatie</h3>
-                        @if($contact)
-                            <dl class="space-y-3">
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Adres</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">
-                                        @if($contact->straat)
-                                            {{ $contact->straat }} {{ $contact->huisnummer }}{{ $contact->toevoeging }}<br>
-                                            {{ $contact->postcode }} {{ $contact->woonplaats }}
-                                        @else
-                                            Geen adres
-                                        @endif
-                                    </dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">E-mail</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">
-                                        @if($contact->email)
-                                            <a href="mailto:{{ $contact->email }}" class="text-blue-600 hover:text-blue-800">{{ $contact->email }}</a>
-                                        @else
-                                            Geen e-mail
-                                        @endif
-                                    </dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Mobiel</dt>
-                                    <dd class="text-sm text-gray-900 dark:text-gray-100">
-                                        @if($contact->mobiel)
-                                            <a href="tel:{{ $contact->mobiel }}" class="text-blue-600 hover:text-blue-800">{{ $contact->mobiel }}</a>
-                                        @else
-                                            Geen mobiel
-                                        @endif
-                                    </dd>
-                                </div>
-                            </dl>
-                        @else
-                            <p class="text-sm text-gray-500 dark:text-gray-400 italic">Geen contactgegevens gevonden</p>
-                        @endif
-                    </div>
-                </div>
-
-                <!-- Gezinsleden -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Alle Gezinsleden</h3>
-                        @if($gezin->personen->count() > 0)
-                            <div class="space-y-3">
-                                @foreach($gezin->personen as $persoon)
-                                    <div class="border-l-4 {{ $persoon->is_vertegenwoordiger ? 'border-blue-500' : 'border-gray-300' }} pl-4">
-                                        <div class="flex justify-between items-start">
-                                            <div>
-                                                <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                    {{ $persoon->volledige_naam }}
-                                                    @if($persoon->is_vertegenwoordiger)
-                                                        <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full ml-2">
-                                                            Vertegenwoordiger
-                                                        </span>
-                                                    @endif
-                                                </p>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                    Geboren: {{ $persoon->geboortedatum->format('d-m-Y') }} 
-                                                    ({{ $persoon->geboortedatum->age }} jaar)
-                                                </p>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $persoon->type_persoon }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
                             </div>
-                        @else
-                            <p class="text-sm text-gray-500 dark:text-gray-400 italic">Geen gezinsleden gevonden</p>
-                        @endif
-                    </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Geboortedatum</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $vertegenwoordiger->geboortedatum ? $vertegenwoordiger->geboortedatum->format('d-m-Y') : '~~~~~' }}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">TypePersoon</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $vertegenwoordiger->type_persoon ?? '~~~~~' }}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Vertegenwoordiger</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    ~~~~~
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Straatnaam</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $contact->straat ?? '~~~~~' }}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Huisnummer</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $contact->huisnummer ?? '~~~~~' }}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Toevoeging</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $contact->toevoeging ?? '~~~~~' }}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Postcode</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $contact->postcode ?? '~~~~~' }}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Woonplaats</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    {{ $contact->woonplaats ?? '~~~~~' }}
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    @if($contact && $contact->email)
+                                        <a href="mailto:{{ $contact->email }}" class="text-blue-600 hover:text-blue-800">{{ $contact->email }}</a>
+                                    @else
+                                        ~~~~~
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 items-center">
+                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Mobiel</label>
+                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                                    @if($contact && $contact->mobiel)
+                                        <a href="tel:{{ $contact->mobiel }}" class="text-blue-600 hover:text-blue-800">{{ $contact->mobiel }}</a>
+                                    @else
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Buttons -->
+                        <div class="mt-8 flex justify-between">
+                            <a href="{{ route('klanten.edit', $gezin) }}" 
+                               class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm">
+                                Wijzig
+                            </a>
+                            <div class="flex space-x-3">
+                                <a href="{{ route('klanten.index') }}" 
+                                   class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm">
+                                    terug
+                                </a>
+                                <a href="#" 
+                                   class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm">
+                                    home
+                                </a>
+                            </div>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-500 dark:text-gray-400 italic">Geen vertegenwoordiger gevonden</p>
+                    @endif
                 </div>
             </div>
 

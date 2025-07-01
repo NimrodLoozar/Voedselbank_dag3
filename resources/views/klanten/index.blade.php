@@ -73,25 +73,25 @@
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-900">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Naam Gezin
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Vertegenwoordiger
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             E-mailadres
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Mobiel
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Adres
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Woonplaats
                                         </th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Klant Details
                                         </th>
                                     </tr>
@@ -99,74 +99,70 @@
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                     @foreach($klanten as $klant)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                            <td class="px-2 py-4 whitespace-nowrap">
+                                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100 max-w-24 truncate" title="{{ $klant->gezin_naam }}">
                                                     {{ $klant->gezin_naam }}
                                                 </div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                    Code: {{ $klant->gezin_code }}
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                                    {{ $klant->gezin_code }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900 dark:text-gray-100">
+                                            <td class="px-2 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900 dark:text-gray-100 max-w-28 truncate" title="{{ $klant->vertegenwoordiger_naam }}">
                                                     {{ $klant->vertegenwoordiger_naam }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-2 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900 dark:text-gray-100">
                                                     @if($klant->email)
-                                                        <a href="mailto:{{ $klant->email }}" class="text-blue-600 hover:text-blue-800">{{ $klant->email }}</a>
+                                                        <div class="max-w-32 truncate">
+                                                            <a href="mailto:{{ $klant->email }}" class="text-blue-600 hover:text-blue-800 text-xs" title="{{ $klant->email }}">{{ Str::limit($klant->email, 18) }}</a>
+                                                        </div>
                                                     @else
-                                                        <span class="text-gray-500 dark:text-gray-400 italic">Geen email</span>
+                                                        <span class="text-gray-500 dark:text-gray-400 italic text-xs">Geen email</span>
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-2 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900 dark:text-gray-100">
                                                     @if($klant->mobiel)
-                                                        <a href="tel:{{ $klant->mobiel }}" class="text-blue-600 hover:text-blue-800">{{ $klant->mobiel }}</a>
+                                                        <a href="tel:{{ $klant->mobiel }}" class="text-blue-600 hover:text-blue-800 text-xs">{{ $klant->mobiel }}</a>
                                                     @else
-                                                        <span class="text-gray-500 dark:text-gray-400 italic">Geen mobiel</span>
+                                                        <span class="text-gray-500 dark:text-gray-400 italic text-xs">Geen mobiel</span>
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-2 py-4">
                                                 <div class="text-sm text-gray-900 dark:text-gray-100">
                                                     @if($klant->straat)
-                                                        {{ $klant->straat }} {{ $klant->huisnummer }}{{ $klant->toevoeging }}
+                                                        <div class="max-w-28 truncate" title="{{ $klant->straat }} {{ $klant->huisnummer }}{{ $klant->toevoeging }}">
+                                                            <span class="text-xs">{{ Str::limit($klant->straat, 12) }} {{ $klant->huisnummer }}{{ $klant->toevoeging }}</span>
+                                                        </div>
                                                         <div class="text-xs text-gray-500 dark:text-gray-400">{{ $klant->postcode }}</div>
                                                     @else
-                                                        <span class="text-gray-500 dark:text-gray-400 italic">Geen adres</span>
+                                                        <span class="text-gray-500 dark:text-gray-400 italic text-xs">Geen adres</span>
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-2 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900 dark:text-gray-100">
                                                     @if($klant->woonplaats)
-                                                        {{ $klant->woonplaats }}
+                                                        <div class="max-w-20 truncate text-xs" title="{{ $klant->woonplaats }}">
+                                                            {{ $klant->woonplaats }}
+                                                        </div>
                                                     @else
-                                                        <span class="text-gray-500 dark:text-gray-400 italic">Onbekend</span>
+                                                        <span class="text-gray-500 dark:text-gray-400 italic text-xs">Onbekend</span>
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <div class="flex space-x-2">
-                                                    <a href="{{ route('klanten.show', $klant->gezin_id) }}" 
-                                                       class="inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-md transition-colors duration-200">
-                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                                        </svg>
-                                                        Show
-                                                    </a>
-                                                    <a href="{{ route('klanten.edit', $klant->gezin_id) }}" 
-                                                       class="inline-flex items-center px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs font-medium rounded-md transition-colors duration-200">
-                                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                                        </svg>
-                                                        Edit
-                                                    </a>
-                                                </div>
+                                            <td class="px-2 py-4 whitespace-nowrap text-sm font-medium">
+                                                <a href="{{ route('klanten.show', $klant->gezin_id) }}" 
+                                                   class="inline-flex items-center justify-center p-1 text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                                                   title="Bekijk klant details">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                                    </svg>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
