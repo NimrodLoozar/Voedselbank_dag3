@@ -134,59 +134,6 @@
                     @endif
                 </div>
             </div>
-
-            <!-- Eetwensen Section -->
-            @if($gezin->eetwensen->count() > 0)
-                <div class="mt-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Eetwensen</h3>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach($gezin->eetwensen as $eetwens)
-                                <span class="inline-flex items-center px-3 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">
-                                    {{ $eetwens->naam }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-            <!-- Voedselpakketten Section -->
-            @if($gezin->voedselpakketten->count() > 0)
-                <div class="mt-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Recente Voedselpakketten</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-900">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Datum</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Omschrijving</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    @foreach($gezin->voedselpakketten->take(5) as $pakket)
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                                {{ $pakket->created_at->format('d-m-Y') }}
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                                {{ $pakket->omschrijving ?: 'Standaard voedselpakket' }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                                                    Uitgegeven
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 

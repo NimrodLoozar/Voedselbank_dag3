@@ -46,7 +46,7 @@ class KlantenController extends Controller
      */
     public function show($id)
     {
-        $gezin = Gezin::with(['personen', 'contacts', 'eetwensen', 'voedselpakketten'])
+        $gezin = Gezin::with(['personen', 'contacts'])
             ->findOrFail($id);
         
         $vertegenwoordiger = $gezin->personen->where('is_vertegenwoordiger', true)->first();
