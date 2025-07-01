@@ -131,4 +131,51 @@ class ProductController extends Controller
         return redirect()->route('producten.index')
             ->with('success', 'Product succesvol verwijderd.');
     }
+
+    /**
+     * Display inventory overview of all products in stock
+     */
+    public function inventoryOverview(Request $request)
+    {
+        $categories = Categorie::all();
+
+        $query = Product::with(['categorie', 'magazijnen'])
+            ->whereHas('magazijnen'); // Only products that are in warehouses
+
+        // Filter by category if selected
+        if ($request->filled('categorie_id')) {
+            $query->where('categorie_id', $request->categorie_id);
+        }
+
+        $producten = $query->get();
+        $selectedCategory = $request->categorie_id;
+
+        return view('inventory.overview', compact('producten', 'categories', 'selectedCategory'));
+    }
+
+    /**
+     * Show inventory for a specific category
+     */
+    public function showCategoryInventory(Request $request)
+    {
+        $request->validate([
+            'categorie_id' => 'required|exists:categories,id'
+        ]);
+
+        $categorie = Categorie::findOrFail($request->categorie_id);
+
+        $producten = Product::with(['categorie', 'magazijnen'])
+            ->where('categorie_id', $request->categorie_id)
+            ->whereHas('magazijnen') // Only products that are in warehouses
+            ->get();
+
+        if ($producten->isEmpty()) {
+            return back()->with('error', 'Er zijn geen producten bekend die behoren bij de geselecteerde productcategorie');
+        }
+
+        $categories = Categorie::all();
+
+        return view('inventory.overview', compact('producten', 'categories', 'categorie'))
+            ->with('success', "Voorraad voor categorie '{$categorie->naam}' weergegeven");
+    }
 }

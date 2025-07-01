@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Persoon;
+use App\Models\Eetwens;
+use App\Models\Voedselpakket;
+use App\Models\Contact;
 
 class Gezin extends Model
 {
