@@ -14,6 +14,10 @@ return new class extends Migration
     {
         // Create stored procedure for updating customer information
         DB::unprepared('
+            DROP PROCEDURE IF EXISTS UpdateCustomerInfo;
+        ');
+        
+        DB::unprepared('
             CREATE PROCEDURE UpdateCustomerInfo(
                 IN p_gezin_id INT,
                 IN p_voornaam VARCHAR(255),
@@ -29,7 +33,7 @@ return new class extends Migration
                 OUT p_success BOOLEAN,
                 OUT p_message VARCHAR(500)
             )
-            BEGIN
+            proc_label: BEGIN
                 DECLARE EXIT HANDLER FOR SQLEXCEPTION
                 BEGIN
                     ROLLBACK;
@@ -46,17 +50,17 @@ return new class extends Migration
                         SET p_success = FALSE;
                         SET p_message = "De postcode komt niet uit de regio Maaskantje";
                         ROLLBACK;
-                        LEAVE proc;
+                        LEAVE proc_label;
                     END IF;
                 END IF;
 
                 -- Validate Dutch mobile number
                 IF p_mobiel IS NOT NULL AND p_mobiel != "" THEN
-                    IF p_mobiel NOT REGEXP "^(06[0-9]{8}|\\+31\\s6[0-9]{8}|0031\\s6[0-9]{8})$" THEN
+                    IF p_mobiel NOT REGEXP "^(06[0-9]{8}|\\\\+31\\\\s6[0-9]{8}|0031\\\\s6[0-9]{8})$" THEN
                         SET p_success = FALSE;
                         SET p_message = "Het mobiele nummer moet een geldig Nederlands mobiel nummer zijn";
                         ROLLBACK;
-                        LEAVE proc;
+                        LEAVE proc_label;
                     END IF;
                 END IF;
 
@@ -75,7 +79,7 @@ return new class extends Migration
                     SET p_success = FALSE;
                     SET p_message = "Geen vertegenwoordiger gevonden voor dit gezin";
                     ROLLBACK;
-                    LEAVE proc;
+                    LEAVE proc_label;
                 END IF;
 
                 -- Update contact information
@@ -97,8 +101,6 @@ return new class extends Migration
                 
                 SET p_success = TRUE;
                 SET p_message = "De klantgegevens zijn gewijzigd";
-
-                proc: LEAVE proc;
             END
         ');
     }
