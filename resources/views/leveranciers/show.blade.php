@@ -9,28 +9,37 @@
                         Overzicht producten
                     </h1>
 
+                    <!-- Success/Error Messages -->
+                    @if(session('success'))
+                        <div style="background: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 10px; border-radius: 4px; margin-bottom: 1rem;">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div style="background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 4px; margin-bottom: 1rem;">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    {{-- CSRF-token toevoegen, heeft geen effect in een GET-view, maar kan geen kwaad --}}
+                    <form style="display:none;">@csrf</form>
+
                     <!-- Leverancier Information Form -->
                     <div class="mb-8">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Naam:</label>
-                                <div class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                                    {{ $leverancier->naam }}
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Leveranciernummer:</label>
-                                <div class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                                    {{ $leverancier->leverancier_nummer }}
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Leveranciertype:</label>
-                                <div class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
-                                    {{ $leverancier->leverancier_type }}
-                                </div>
-                            </div>
-                        </div>
+                        <table style="border-collapse: collapse; min-width: 350px;">
+                            <tr>
+                                <td style="font-weight: bold; padding: 6px 12px;">Naam:</td>
+                                <td style="padding: 6px 12px;">{{ $leverancier->naam }}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 6px 12px;">Leveranciernummer:</td>
+                                <td style="padding: 6px 12px;">{{ $leverancier->leverancier_nummer }}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 6px 12px;">Leveranciertype:</td>
+                                <td style="padding: 6px 12px;">{{ $leverancier->leverancier_type }}</td>
+                            </tr>
+                        </table>
                     </div>
 
                     <!-- Products Table -->
@@ -42,7 +51,7 @@
                                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Naam</th>
                                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Soort Allergie</th>
                                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Barcode</th>
-                                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">Houdbaarheidsdatum</th>
+                                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Houdbaarheidsdatum</th>
                                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">Wijzig Product</th>
                                     </tr>
                                 </thead>
@@ -62,7 +71,7 @@
                                                 {{ $product->houdbaarheidsdatum ? $product->houdbaarheidsdatum->format('d-m-Y') : '-' }}
                                             </td>
                                             <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                                <a href="#" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                                <a href="{{ route('leveranciers.product.edit', [$leverancier->id, $product->id]) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                                     </svg>
