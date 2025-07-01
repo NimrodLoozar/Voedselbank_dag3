@@ -15,7 +15,8 @@ class RolPerGebruikerSeeder extends Seeder
         $rolPerGebruiker = [
             ['id' => 1, 'gebruiker_id' => 1, 'rol_id' => 1],
             ['id' => 2, 'gebruiker_id' => 2, 'rol_id' => 2],
-            ['id' => 3, 'gebruiker_id' => 3, 'rol_id' => 3]
+            ['id' => 3, 'gebruiker_id' => 3, 'rol_id' => 3],
+            ['id' => 4, 'gebruiker_id' => 4, 'rol_id' => 1] // Admin user gets Manager role
         ];
 
         foreach ($rolPerGebruiker as $relatie) {
