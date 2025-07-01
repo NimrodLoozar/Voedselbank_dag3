@@ -15,24 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('foodstorage.index')" :active="request()->routeIs('foodstorage.*')">
-                        {{ __('Voorraad beheer') }}
-                    </x-nav-link>
-                    @if (auth()->user() && auth()->user()->hasRole('Admin'))
-                        <x-nav-link :href="route('customers.index')"  :active="request()->routeIs('test')">
-                            {{ __('Klanten') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('suppliers.index')" :active="request()->routeIs('suppliers.*')">
-                            {{ __('Suppliers') }}
-                        </x-nav-link>
-                    @endif
 
-                    @if (auth()->user() && auth()->user()->hasRole('Admin'))
-    <x-nav-link :href="route('food_packages.index')" :active="request()->routeIs('food_packages.index')">
-        {{ __('Voedselpakketten') }}
-    </x-nav-link>
-@endif
-                </div>
+
+         </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -98,16 +83,6 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            
-            <x-responsive-nav-link :href="route('foodstorage.index')" :active="request()->routeIs('foodstorage.*')">
-                {{ __('Food Storage') }}
-            </x-responsive-nav-link>
-
-            @if (auth()->user() && auth()->user()->hasRole('Admin'))
-                <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customer.index')">
-                    {{ __('Klanten') }}
-                </x-responsive-nav-link>
-            @endif
         </div>
 
         <!-- Responsive Settings Options -->
