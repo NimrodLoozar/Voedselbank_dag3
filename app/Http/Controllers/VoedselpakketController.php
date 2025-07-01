@@ -55,8 +55,9 @@ class VoedselpakketController extends Controller
 
     public function show(Voedselpakket $voedselpakket)
     {
-        $voedselpakket->load(['gezin', 'producten']);
-        return view('voedselpakketten.show', compact('voedselpakket'));
+        $voedselpakketData = DB::select('CALL SP_GetVoedselPakketten(?)', [$voedselpakket->id]);
+        $voedselpakketInfo = $voedselpakketData[0] ?? null;
+        return view('voedselpakketten.show', compact('voedselpakketInfo'));
     }
 
     public function edit(Voedselpakket $voedselpakket)

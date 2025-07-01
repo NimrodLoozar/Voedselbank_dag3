@@ -16,15 +16,15 @@
                 <table class="min-w-full text-sm text-left border-collapse">
                     <tr class="border">
                         <th class="px-4 py-2 border w-1/3">Naam:</th>
-                        <td class="px-4 py-2 border">~~ PENDING</td>
+                        <td class="px-4 py-2 border">{{ $voedselpakketInfo->naam ?? 'N/A' }}</td>
                     </tr>
                     <tr class="border">
                         <th class="px-4 py-2 border">Omschrijving:</th>
-                        <td class="px-4 py-2 border">~~ PENDING</td>
+                        <td class="px-4 py-2 border">{{ $voedselpakketInfo->omschrijving ?? 'N/A' }}</td>
                     </tr>
                     <tr class="border">
                         <th class="px-4 py-2 border">Totaal aantal Personen:</th>
-                        <td class="px-4 py-2 border">~~ PENDING</td>
+                        <td class="px-4 py-2 border">{{ $voedselpakketInfo->totaal_aantal_personen ?? 'N/A' }}</td>
                     </tr>
                 </table>
             </div>
@@ -43,22 +43,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for ($i = 0; $i < 3; $i++)
+                        @if($voedselpakketInfo)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
-                                <td class="px-4 py-2 border">~~ PENDING</td>
+                                <td class="px-4 py-2 border">{{ $voedselpakketInfo->pakket_nummer }}</td>
+                                <td class="px-4 py-2 border">{{ $voedselpakketInfo->datum_samenstelling }}</td>
+                                <td class="px-4 py-2 border">{{ $voedselpakketInfo->datum_uitgifte ?? 'Nog niet uitgereikt' }}</td>
+                                <td class="px-4 py-2 border">{{ $voedselpakketInfo->status }}</td>
+                                <td class="px-4 py-2 border">{{ $voedselpakketInfo->aantal_producten }}</td>
                                 <td class="px-4 py-2 border text-center">
-                                    <a href="#" class="text-blue-600 hover:text-blue-800">
+                                    <a href="{{ route('voedselpakketten.edit', $voedselpakketInfo->pakket_nummer) }}" class="text-blue-600 hover:text-blue-800">
                                         <svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path d="M15.232 5.232l3.536 3.536M4 20h4.586a1 1 0 0 0 .707-.293l10-10a1 1 0 0 0 0-1.414l-3.586-3.586a1 1 0 0 0-1.414 0l-10 10A1 1 0 0 0 4 20z"/>
                                         </svg>
                                     </a>
                                 </td>
                             </tr>
-                        @endfor
+                        @else
+                            <tr>
+                                <td colspan="6" class="px-4 py-2 border text-center text-gray-500">Geen voedselpakket gevonden</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
