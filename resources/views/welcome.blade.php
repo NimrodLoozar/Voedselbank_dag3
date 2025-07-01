@@ -75,9 +75,6 @@
 
 
                         <div class="hidden lg:flex lg:gap-x-12">
-                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white">
-                                {{ __('Dashboard') }}
-                            </x-nav-link>
                             <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')" class="text-white">
                                 {{ __('Voedselpakketten') }}
                             </x-nav-link>
