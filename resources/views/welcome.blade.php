@@ -78,43 +78,14 @@
                         </div>
 
 
-                        <div class="hidden lg:flex lg:gap-x-12">
+                        <div class="hidden lg:flex lg:gap-x-6">
                             <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')" class="text-white">
                                 {{ __('Voedselpakketten') }}
                             </x-nav-link>
-                            <!-- more -->
-
-                            <!-- Features dropdown -->
-                            <div class="relative" x-data="{ open: false }">
-                                <button @click="open = !open" @click.away="open = false"
-                                    class="flex items-center text-sm/6 font-semibold text-gray-100 hover:text-gray-300 transition duration-150 ease-in-out">
-                                    <span>Features</span>
-                                    <svg class="ml-1 h-4 w-4 transition-transform duration-150"
-                                        :class="{ 'rotate-180': open }" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-
-                                <div x-show="open" x-transition:enter="transition ease-out duration-100"
-                                    x-transition:enter-start="transform opacity-0 scale-95"
-                                    x-transition:enter-end="transform opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-75"
-                                    x-transition:leave-start="transform opacity-100 scale-100"
-                                    x-transition:leave-end="transform opacity-0 scale-95"
-                                    class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-                                    <div class="py-1">
-                                        <a href="{{ route('inventory.overview') }}"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                            Voorraad
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')" class="text-white">
+                                {{ __('Voorraad') }}
+                            </x-nav-link>
                         </div>
-
-
 
                         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center gap-x-3">
                             <div class="mr-4">
