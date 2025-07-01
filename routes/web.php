@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\VoedselpakketController;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\LeverancierController;
 
 
 Route::get('/', function () {
@@ -36,6 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/voedselpakketten/{voedselpakket}/edit', [VoedselpakketController::class, 'edit'])->name('voedselpakketten.edit');
     Route::post('/voedselpakketten', [VoedselpakketController::class, 'store'])->name('voedselpakketten.store');
     Route::patch('/voedselpakketten/{voedselpakket}', [VoedselpakketController::class, 'update'])->name('voedselpakketten.update');
+
+
+    Route::resource('leveranciers', LeverancierController::class);
 
 });
 
