@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 
 class LeverancierController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $leveranciers = Leverancier::with('contacts')->get();
+        $query = Leverancier::with('contacts');
+        
+        // Filter op leveranciertype als er een is geselecteerd
+        if ($request->filled('leverancier_type')) {
+            $query->where('leverancier_type', $request->leverancier_type);
+        }
+        
+        $leveranciers = $query->orderBy('naam')->get();
+        
         return view('leveranciers.index', compact('leveranciers'));
     }
 
