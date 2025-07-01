@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KlantenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\VoedselpakketController;
 use Illuminate\Support\Facades\DB;
 
 
@@ -11,6 +12,9 @@ Route::get('/', function () {
     $isMaintenanceMode = DB::table('settings')->where('key', 'maintenance_mode')->value('value') ?? false;
     return view('welcome', compact('isMaintenanceMode'));
 })->name('/');
+
+Route::get('/voedselpakketten', [VoedselpakketController::class, 'index'])->name('voedselpakketten.index');
+Route::get('/voedselpakketten/{voedselpakket}/edit', [VoedselpakketController::class, 'edit'])->name('voedselpakketten.edit');
 
 Route::get('/dashboard', function () {
     $isMaintenanceMode = DB::table('settings')->where('key', 'maintenance_mode')->value('value') ?? false;
