@@ -13,7 +13,7 @@
     <div class="relative h-64 w-full mb-8">
         <img src="{{ asset('img/volunteers-collecting-food-donations-close-up.jpg') }}"
              alt="Volunteers collecting food donations" 
-             class="w-full h-full object-cover"
+             class="w-full h-20 object-cover"
              onerror="this.onerror=null; this.src='{{ asset('img/default.jpg') }}'; console.log('Image failed to load');"
              onload="console.log('Image loaded successfully');">
         <div class="absolute inset-0 flex items-center justify-center">
