@@ -7,47 +7,46 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Postcode Filter -->
+            <!-- Header with inline postcode filter -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Filter op Postcode</h3>
-                    <form method="GET" action="{{ route('klanten.index') }}" class="flex flex-wrap items-end gap-4">
-                        <div class="flex-1 min-w-64">
-                            <label for="postcode" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Selecteer Postcode
-                            </label>
-                            <select name="postcode" id="postcode" class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" onchange="toggleManualInput()">
-                                <option value="">-- Alle postcodes --</option>
-                                @foreach($postcodes as $pc)
-                                    <option value="{{ $pc }}" {{ $postcode == $pc ? 'selected' : '' }}>
-                                        {{ $pc }}
-                                    </option>
-                                @endforeach
-                                <option value="custom" {{ $postcode && !in_array($postcode, $postcodes->toArray()) ? 'selected' : '' }}>-- Voer handmatig in --</option>
-                            </select>
-                        </div>
-                        <div class="flex-1 min-w-64" id="manual-input" style="display: {{ $postcode && !in_array($postcode, $postcodes->toArray()) ? 'block' : 'none' }};">
-                            <label for="manual_postcode" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Voer Postcode In
-                            </label>
-                            <input type="text" name="manual_postcode" id="manual_postcode" 
-                                   value="{{ $postcode && !in_array($postcode, $postcodes->toArray()) ? $postcode : '' }}"
-                                   placeholder="bijv. 1234AB of 5270AA"
-                                   class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </div>
-                        <div class="flex gap-2">
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Overzicht Klanten</h1>
+                        
+                        <form method="GET" action="{{ route('klanten.index') }}" class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <label for="postcode" class="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+                                    Selecteer Postcode
+                                </label>
+                                <select name="postcode" id="postcode" class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" onchange="toggleManualInput()">
+                                    <option value="">-- Alle postcodes --</option>
+                                    @foreach($postcodes as $pc)
+                                        <option value="{{ $pc }}" {{ $postcode == $pc ? 'selected' : '' }}>
+                                            {{ $pc }}
+                                        </option>
+                                    @endforeach
+                                    <option value="custom" {{ $postcode && !in_array($postcode, $postcodes->toArray()) ? 'selected' : '' }}>-- Voer handmatig in --</option>
+                                </select>
+                            </div>
+                            
+                            <div id="manual-input" style="display: {{ $postcode && !in_array($postcode, $postcodes->toArray()) ? 'flex' : 'none' }};" class="items-center gap-2">
+                                <input type="text" name="manual_postcode" id="manual_postcode" 
+                                       value="{{ $postcode && !in_array($postcode, $postcodes->toArray()) ? $postcode : '' }}"
+                                       placeholder="bijv. 1234AB"
+                                       class="rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            </div>
+                            
+                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 whitespace-nowrap">
                                 Toon Klanten
                             </button>
+                            
                             @if($postcode)
-                                <a href="{{ route('klanten.index') }}" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                <a href="{{ route('klanten.index') }}" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 whitespace-nowrap">
                                     Reset Filter
                                 </a>
                             @endif
-                        </div>
-                    </form>
-                </div>
-            </div>
+                        </form>
+                    </div>
 
             <!-- Message Display -->
             @if($message)
@@ -63,24 +62,8 @@
 
             <!-- Klanten Table -->
             @if($klanten->count() > 0)
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                Klanten 
-                                @if($postcode)
-                                    <span class="text-sm text-gray-600 dark:text-gray-400">
-                                        (Postcode: {{ $postcode }})
-                                    </span>
-                                @endif
-                            </h3>
-                            <span class="text-sm text-gray-600 dark:text-gray-400">
-                                Totaal: {{ $klanten->count() }} klant{{ $klanten->count() !== 1 ? 'en' : '' }}
-                            </span>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-900">
                                     <tr>
                                         <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
@@ -179,7 +162,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
                 </div>
             @elseif(!$message)
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -204,7 +186,7 @@
             const manualInput = document.getElementById('manual_postcode');
             
             if (select.value === 'custom') {
-                manualDiv.style.display = 'block';
+                manualDiv.style.display = 'flex';
                 manualInput.focus();
             } else {
                 manualDiv.style.display = 'none';
