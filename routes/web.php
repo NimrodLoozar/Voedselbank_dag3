@@ -13,6 +13,7 @@ Route::get('/', function () {
 })->name('/');
 
 Route::get('/voedselpakketten', [VoedselpakketController::class, 'index'])->name('voedselpakketten.index');
+Route::get('/voedselpakketten/show/{voedselpakket}', [VoedselpakketController::class, 'show'])->name('voedselpakketten.show');
 Route::get('/voedselpakketten/{voedselpakket}/edit', [VoedselpakketController::class, 'edit'])->name('voedselpakketten.edit');
 
 Route::get('/dashboard', function () {
