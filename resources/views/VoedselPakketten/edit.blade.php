@@ -28,15 +28,23 @@
                 @method('PATCH')
 
                 <div>
-                    <select name="status" class="w-full border rounded px-3 py-2">
+                    <select name="status" class="w-full border rounded px-3 py-2" {{ $pakket->status === 'NietMeerIngeschreven' ? 'disabled' : '' }}>
                         <option value="NietUitgereikt" {{ $pakket->status === 'NietUitgereikt' ? 'selected' : '' }}>Niet Uitgereikt</option>
                         <option value="Uitgereikt" {{ $pakket->status === 'Uitgereikt' ? 'selected' : '' }}>Uitgereikt</option>
                         <option value="NietMeerIngeschreven" {{ $pakket->status === 'NietMeerIngeschreven' ? 'selected' : '' }}>Niet Meer Ingeschreven</option>
                     </select>
                 </div>
 
+                <br>
+                 <!-- Warning Message for NietMeerIngeschreven -->
+                @if($pakket->status === 'NietMeerIngeschreven')
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                        Dit gezin is niet meer ingeschreven bij de voedselbank en daarom kan er geen voedselpakket worden uitgereikt
+                    </div>
+                @endif
+
                 <div class="mt-4 flex gap-2">
-                    <button type="submit" class="bg-gray-600 dark:bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-700 dark:hover:bg-gray-800">
+                    <button type="submit" class="bg-gray-600 dark:bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-700 dark:hover:bg-gray-800 {{ $pakket->status === 'NietMeerIngeschreven' ? 'opacity-50 cursor-not-allowed' : '' }}" {{ $pakket->status === 'NietMeerIngeschreven' ? 'disabled' : '' }}>
                         Wijzig status voedselpakket
                     </button>
 

@@ -15,12 +15,24 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')">
-                    {{ __('Voedselpakketten') }}
-                </x-nav-link>
+
+                    <x-nav-link :href="route('klanten.index')" :active="request()->routeIs('klanten.*')">
+                        {{ __('Klanten') }}
+                    </x-nav-link>
+                        <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')">
+                        {{ __('Voorraad') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')">
+                            {{ __('Voedselpakketten') }}
+                        </x-nav-link>
+
+                    <x-nav-link :href="route('leveranciers.index')" :active="request()->routeIs('leveranciers.*')">
+                        {{ __('Leveranciers') }}
+
+                    </x-nav-link>
 
 
-         </div>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -84,6 +96,9 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('klanten.index')" :active="request()->routeIs('klanten.*')">
+                {{ __('Klanten') }}
             </x-responsive-nav-link>
         </div>
 

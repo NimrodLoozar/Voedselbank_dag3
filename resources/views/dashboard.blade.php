@@ -33,7 +33,56 @@
             @endif
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+                    <h2 class="text-2xl font-bold mb-6">Welkom bij Voedselbank Maaskantje</h2>
+                    <p class="text-lg mb-4">Je bent succesvol ingelogd!</p>
+
+                    <!-- Quick Navigation -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                        <a href="{{ route('inventory.overview') }}"
+                            class="block p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                </svg>
+                                <div>
+                                    <h3 class="text-lg font-semibold">Overzicht Productvoorraden</h3>
+                                    <p class="text-sm opacity-90">Bekijk alle beschikbare producten in het magazijn</p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <div
+                            class="block p-6 bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-lg shadow-lg opacity-60">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <div>
+                                    <h3 class="text-lg font-semibold">Gebruikers Beheer</h3>
+                                    <p class="text-sm opacity-90">Binnenkort beschikbaar</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="block p-6 bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-lg shadow-lg opacity-60">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                                </svg>
+                                <div>
+                                    <h3 class="text-lg font-semibold">Voedselpakketten</h3>
+                                    <p class="text-sm opacity-90">Binnenkort beschikbaar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
