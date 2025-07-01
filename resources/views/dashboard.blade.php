@@ -36,6 +36,7 @@
                     <h2 class="text-2xl font-bold mb-6">Welkom bij Voedselbank Maaskantje</h2>
                     <p class="text-lg mb-4">Je bent succesvol ingelogd!</p>
 
+                    @if(auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Manager'))
                     <!-- Quick Navigation -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                         <a href="{{ route('inventory.overview') }}"
@@ -53,23 +54,23 @@
                             </div>
                         </a>
 
-                        <div
-                            class="block p-6 bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-lg shadow-lg opacity-60">
+                        <a href="{{ route('klanten.index') }}"
+                            class="block p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
                             <div class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                                 <div>
-                                    <h3 class="text-lg font-semibold">Gebruikers Beheer</h3>
-                                    <p class="text-sm opacity-90">Binnenkort beschikbaar</p>
+                                    <h3 class="text-lg font-semibold">Klanten Beheer</h3>
+                                    <p class="text-sm opacity-90">Beheer klantgegevens en registraties</p>
                                 </div>
                             </div>
-                        </div>
+                        </a>
 
-                        <div
-                            class="block p-6 bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-lg shadow-lg opacity-60">
+                        <a href="{{ route('voedselpakketten.index') }}"
+                            class="block p-6 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105">
                             <div class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -78,14 +79,16 @@
                                 </svg>
                                 <div>
                                     <h3 class="text-lg font-semibold">Voedselpakketten</h3>
-                                    <p class="text-sm opacity-90">Binnenkort beschikbaar</p>
+                                    <p class="text-sm opacity-90">Beheer en distribueer voedselpakketten</p>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
+        <br>
         <x-dashboard.system-controls :isMaintenanceMode="$isMaintenanceMode" />
 
 </x-app-layout>

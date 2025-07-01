@@ -42,6 +42,14 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'), // Ensure to hash the password
         ]);
 
+
+          // Create an admin user
+        $adminUser = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'Admin@example.com',
+            'password' => bcrypt('Admin1234'),
+        ]);
+
         $this->call([
             SettingSeeder::class,
             AllergieSeeder::class,
@@ -66,6 +74,8 @@ class DatabaseSeeder extends Seeder
             ProductPerVoedselpakketSeeder::class,
             ProductPerLeverancierSeeder::class,
             ProductPerMagazijnSeeder::class,
+
         ]);
     }
+
 }

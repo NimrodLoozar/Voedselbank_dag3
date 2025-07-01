@@ -43,6 +43,16 @@ class GebruikerSeeder extends Seeder
                 'is_ingelogd' => true,
                 'ingelogd' => '2024-06-20 12:05:20',
                 'uitgelogd' => null
+            ],
+            [
+                'id' => 4,
+                'persoon_id' => 4,
+                'inlog_naam' => 'Admin',
+                'gebruikersnaam' => 'Admin@example.com',
+                'wachtwoord' => bcrypt('Admin1234'),
+                'is_ingelogd' => false,
+                'ingelogd' => null,
+                'uitgelogd' => null
             ]
         ];
 

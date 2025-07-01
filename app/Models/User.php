@@ -45,4 +45,36 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the gebruiker associated with the user.
+     */
+    public function gebruiker()
+    {
+        return $this->hasOne(Gebruiker::class, 'gebruikersnaam', 'email');
+    }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole(string $roleName): bool
+    {
+        if (!$this->gebruiker) {
+            return false;
+        }
+
+        return $this->gebruiker->rollen()->where('naam', $roleName)->exists();
+    }
+
+    /**
+     * Get all roles for this user
+     */
+    public function getRoles()
+    {
+        if (!$this->gebruiker) {
+            return collect();
+        }
+
+        return $this->gebruiker->rollen()->pluck('naam');
+    }
 }
