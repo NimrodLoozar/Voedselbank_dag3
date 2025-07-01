@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'), // Ensure to hash the password
         ]);
 
+
           // Create an admin user
         $adminUser = User::factory()->create([
             'name' => 'Admin',
@@ -73,6 +74,7 @@ class DatabaseSeeder extends Seeder
             ProductPerVoedselpakketSeeder::class,
             ProductPerLeverancierSeeder::class,
             ProductPerMagazijnSeeder::class,
+
         ]);
     }
 
