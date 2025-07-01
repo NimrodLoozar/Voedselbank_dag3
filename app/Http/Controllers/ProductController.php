@@ -147,35 +147,101 @@ class ProductController extends Controller
             $query->where('categorie_id', $request->categorie_id);
         }
 
-        $producten = $query->get();
+        $producten = $query->paginate(10); // 10 items per page
         $selectedCategory = $request->categorie_id;
 
-        return view('inventory.overview', compact('producten', 'categories', 'selectedCategory'));
+        // Check if category filter returned no results
+        if ($request->filled('categorie_id') && $producten->isEmpty()) {
+            $categorie = Categorie::find($request->categorie_id);
+            return view('inventory.overview', compact('producten', 'categories', 'selectedCategory'))
+                ->with('error', 'Er zijn geen producten bekend die behoren bij de geselecteerde productcategorie');
+        }
+
+        // Add success message if category was selected and has results
+        $message = null;
+        if ($request->filled('categorie_id') && $producten->isNotEmpty()) {
+            $categorie = Categorie::find($request->categorie_id);
+            $message = "Voorraad voor categorie '{$categorie->naam}' weergegeven";
+        }
+
+        return view('inventory.overview', compact('producten', 'categories', 'selectedCategory'))
+            ->with('success', $message);
     }
 
     /**
-     * Show inventory for a specific category
+     * Show detailed view of a product including inventory details
      */
-    public function showCategoryInventory(Request $request)
+    public function showInventoryDetails(Product $product)
+    {
+        $product->load(['categorie', 'leveranciers', 'magazijnen']);
+
+        return view('inventory.details', compact('product'));
+    }
+
+    /**
+     * Show form to edit product inventory
+     */
+    public function editInventory(Product $product)
+    {
+        $product->load(['categorie', 'leveranciers', 'magazijnen']);
+
+        return view('inventory.edit', compact('product'));
+    }
+
+    /**
+     * Update product inventory
+     */
+    public function updateInventory(Request $request, Product $product)
     {
         $request->validate([
-            'categorie_id' => 'required|exists:categories,id'
+            'magazijn_updates' => 'required|array',
+            'magazijn_updates.*.magazijn_id' => 'required|exists:magazijnen,id',
+            'magazijn_updates.*.aantal_uitgeleverd' => 'required|integer|min:0',
+            'magazijn_updates.*.locatie' => 'required|string|max:255',
+            'uitleveringsdatum' => 'nullable|date',
         ]);
 
-        $categorie = Categorie::findOrFail($request->categorie_id);
+        // Validation: Check if user tries to deliver more than available in stock
+        foreach ($request->magazijn_updates as $update) {
+            $magazijn = Magazijn::findOrFail($update['magazijn_id']);
+            $currentStock = $magazijn->aantal; // Current remaining stock
+            $aantalUitgeleverd = $update['aantal_uitgeleverd']; // Amount to deliver
 
-        $producten = Product::with(['categorie', 'magazijnen'])
-            ->where('categorie_id', $request->categorie_id)
-            ->whereHas('magazijnen') // Only products that are in warehouses
-            ->get();
-
-        if ($producten->isEmpty()) {
-            return back()->with('error', 'Er zijn geen producten bekend die behoren bij de geselecteerde productcategorie');
+            // Check if delivery amount exceeds available stock
+            if ($aantalUitgeleverd > $currentStock) {
+                return back()
+                    ->withErrors(['error' => 'Er worden meer producten uitgeleverd dan er in voorraad zijn'])
+                    ->withInput();
+            }
         }
 
-        $categories = Categorie::all();
+        // Update warehouse inventory
+        foreach ($request->magazijn_updates as $update) {
+            $magazijn = Magazijn::findOrFail($update['magazijn_id']);
+            $aantalUitgeleverd = $update['aantal_uitgeleverd'];
 
-        return view('inventory.overview', compact('producten', 'categories', 'categorie'))
-            ->with('success', "Voorraad voor categorie '{$categorie->naam}' weergegeven");
+            // Update the remaining stock (subtract delivered amount)
+            $newStock = $magazijn->aantal - $aantalUitgeleverd;
+
+            $updateData = ['aantal' => $newStock];
+
+            // Set delivery date if provided or if products are being delivered
+            if ($request->filled('uitleveringsdatum')) {
+                $updateData['uitleveringsdatum'] = $request->uitleveringsdatum;
+            } elseif ($aantalUitgeleverd > 0) {
+                $updateData['uitleveringsdatum'] = now();
+            }
+
+            $magazijn->update($updateData);
+
+            // Update pivot table with location info
+            $product->magazijnen()->updateExistingPivot($update['magazijn_id'], [
+                'locatie' => $update['locatie']
+            ]);
+        }
+
+        return redirect()
+            ->route('inventory.details', $product)
+            ->with('success', 'De productgegevens zijn gewijzigd');
     }
 }
