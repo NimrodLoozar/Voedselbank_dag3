@@ -80,7 +80,11 @@ class KlantenController extends Controller
             'vertegenwoordiger_voornaam' => 'required|string|max:255',
             'vertegenwoordiger_achternaam' => 'required|string|max:255',
             'email' => 'nullable|email',
-            'mobiel' => 'nullable|string|max:20',
+            'mobiel' => ['nullable', 'string', 'max:20', function ($attribute, $value, $fail) {
+                if ($value && !Klanten::isValidDutchMobile($value)) {
+                    $fail('Het mobiele nummer moet een geldig Nederlands mobiel nummer zijn (bijv. 06xxxxxxxx of +316xxxxxxxx)');
+                }
+            }],
             'straat' => 'nullable|string|max:255',
             'huisnummer' => 'nullable|string|max:10',
             'toevoeging' => 'nullable|string|max:10',

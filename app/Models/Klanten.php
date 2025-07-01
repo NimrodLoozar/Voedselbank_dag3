@@ -20,6 +20,37 @@ class Klanten extends Model
     }
 
     /**
+     * Check if the mobile number is a valid Dutch mobile number
+     */
+    public static function isValidDutchMobile($mobile)
+    {
+        if (!$mobile) {
+            return true; // Allow empty mobile numbers
+        }
+        
+        // Clean the input: remove spaces, dashes, and parentheses
+        $cleanMobile = preg_replace('/[\s\-\(\)]/', '', $mobile);
+        
+        // Dutch mobile number patterns:
+        // 06XXXXXXXX (national format)
+        // +316XXXXXXXX (international format)
+        // 0031-6XXXXXXXX (alternative international format)
+        $patterns = [
+            '/^06[0-9]{8}$/',           // 06XXXXXXXX
+            '/^\+316[0-9]{8}$/',        // +316XXXXXXXX
+            '/^00316[0-9]{8}$/',        // 00316XXXXXXXX
+        ];
+        
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $cleanMobile)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
      * Get all customers with their contact information
      */
     public static function getAllKlanten()

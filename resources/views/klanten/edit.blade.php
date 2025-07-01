@@ -182,12 +182,23 @@
                             <div class="grid grid-cols-3 gap-4 items-center">
                                 <label for="mobiel" class="text-sm font-medium text-gray-700 dark:text-gray-300">Mobiel</label>
                                 <div class="col-span-2">
-                                    <input type="text" name="mobiel" id="mobiel" 
+                                    <input type="tel" name="mobiel" id="mobiel" 
                                            value="{{ old('mobiel', $contact ? $contact->mobiel : '') }}"
-                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                           pattern="^(06[0-9]{8}|\+316[0-9]{8}|00316[0-9]{8})$"
+                                           placeholder="Bijv. 06xxxxxxxx of +316xxxxxxxx"
+                                           title="Voer een geldig Nederlands mobiel nummer in (bijv. 06xxxxxxxx of +316xxxxxxxx)"
+                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('mobiel') border-red-500 @enderror">
                                     @error('mobiel')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                        <p class="mt-1 text-sm text-red-600 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
                                     @enderror
+                                    <p class="mt-1 text-xs text-gray-500">
+                                        Voer een Nederlands mobiel nummer in (bijv. 06xxxxxxxx of +316xxxxxxxx)
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -214,4 +225,70 @@
             </form>
         </div>
     </div>
+
+    <!-- JavaScript for mobile number validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileInput = document.getElementById('mobiel');
+            
+            if (mobileInput) {
+                // Real-time validation feedback
+                mobileInput.addEventListener('input', function() {
+                    const value = this.value.trim();
+                    if (value === '') {
+                        clearValidationFeedback();
+                        return;
+                    }
+                    
+                    if (isValidDutchMobile(value)) {
+                        showValidFeedback();
+                    } else {
+                        showInvalidFeedback();
+                    }
+                });
+
+                // Format mobile number as user types
+                mobileInput.addEventListener('input', function() {
+                    let value = this.value.replace(/\D/g, ''); // Remove non-digits
+                    
+                    // Format based on the pattern
+                    if (value.startsWith('316') && value.length === 11) {
+                        this.value = '+' + value;
+                    } else if (value.startsWith('06') && value.length === 10) {
+                        this.value = value;
+                    } else if (value.startsWith('00316') && value.length === 13) {
+                        this.value = value;
+                    }
+                });
+            }
+
+            function isValidDutchMobile(mobile) {
+                const cleanMobile = mobile.replace(/[\s\-\(\)]/g, '');
+                const patterns = [
+                    /^06[0-9]{8}$/,     // 06XXXXXXXX
+                    /^\+316[0-9]{8}$/,  // +316XXXXXXXX
+                    /^00316[0-9]{8}$/   // 00316XXXXXXXX
+                ];
+                
+                return patterns.some(pattern => pattern.test(cleanMobile));
+            }
+
+            function showValidFeedback() {
+                const input = document.getElementById('mobiel');
+                input.classList.remove('border-red-500');
+                input.classList.add('border-green-500');
+            }
+
+            function showInvalidFeedback() {
+                const input = document.getElementById('mobiel');
+                input.classList.remove('border-green-500');
+                input.classList.add('border-red-500');
+            }
+
+            function clearValidationFeedback() {
+                const input = document.getElementById('mobiel');
+                input.classList.remove('border-red-500', 'border-green-500');
+            }
+        });
+    </script>
 </x-app-layout>

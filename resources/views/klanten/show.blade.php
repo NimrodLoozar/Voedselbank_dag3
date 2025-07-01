@@ -23,76 +23,76 @@
                 <div class="p-6">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-6">Vertegenwoordiger</h3>
                     @if($vertegenwoordiger)
-                        <div class="space-y-4 max-w-4xl">
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Voornaam</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                        <div class="space-y-0 max-w-4xl">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Voornaam</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $vertegenwoordiger->voornaam ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Tussenvoegsel</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Tussenvoegsel</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $vertegenwoordiger->tussenvoegsel ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Achternaam</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Achternaam</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $vertegenwoordiger->achternaam ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Geboortedatum</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Geboortedatum</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $vertegenwoordiger->geboortedatum ? $vertegenwoordiger->geboortedatum->format('d-m-Y') : '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">TypePersoon</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">TypePersoon</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $vertegenwoordiger->type_persoon ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Vertegenwoordiger</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
-                                    ~~~~~
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Vertegenwoordiger</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
+                                    Ja
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Straatnaam</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Straatnaam</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $contact->straat ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Huisnummer</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Huisnummer</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $contact->huisnummer ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Toevoeging</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Toevoeging</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $contact->toevoeging ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Postcode</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Postcode</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $contact->postcode ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Woonplaats</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Woonplaats</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     {{ $contact->woonplaats ?? '~~~~~' }}
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0 border-b border-gray-200 dark:border-gray-600">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Email</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     @if($contact && $contact->email)
                                         <a href="mailto:{{ $contact->email }}" class="text-blue-600 hover:text-blue-800">{{ $contact->email }}</a>
                                     @else
@@ -100,9 +100,9 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 gap-4 items-center">
-                                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Mobiel</label>
-                                <div class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100">
+                            <div class="grid grid-cols-3 gap-0">
+                                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600">Mobiel</div>
+                                <div class="col-span-2 px-4 py-3 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100">
                                     @if($contact && $contact->mobiel)
                                         <a href="tel:{{ $contact->mobiel }}" class="text-blue-600 hover:text-blue-800">{{ $contact->mobiel }}</a>
                                     @else
