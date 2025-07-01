@@ -68,8 +68,8 @@
                             </div>
                         </div>
 
-                        <div
-                            class="block p-6 bg-gradient-to-r from-gray-400 to-gray-500 text-white rounded-lg shadow-lg opacity-60">
+                        <a href="{{ route('voedselpakketten.index') }}"
+                            class="block p-6 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105">
                             <div class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -78,14 +78,15 @@
                                 </svg>
                                 <div>
                                     <h3 class="text-lg font-semibold">Voedselpakketten</h3>
-                                    <p class="text-sm opacity-90">Binnenkort beschikbaar</p>
+                                    <p class="text-sm opacity-90">Beheer en distribueer voedselpakketten</p>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+        <br>
         <x-dashboard.system-controls :isMaintenanceMode="$isMaintenanceMode" />
 
 </x-app-layout>
