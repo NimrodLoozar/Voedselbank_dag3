@@ -9,6 +9,7 @@ use App\Http\Controllers\VoedselpakketController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\LeverancierController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MagazijnController;
 
 
 Route::get('/', function () {
@@ -33,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // Klanten routes
     Route::get('/klanten', [KlantenController::class, 'index'])->name('klanten.index');
     Route::get('/klanten/{gezin}', [KlantenController::class, 'show'])->name('klanten.show');
@@ -53,7 +54,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/leveranciers/{leverancier}/product/{product}/edit', [LeverancierController::class, 'editProduct'])->name('leveranciers.product.edit');
     Route::put('/leveranciers/{leverancier}/product/{product}', [LeverancierController::class, 'updateProduct'])->name('leveranciers.product.update');
 
-    Route::resource('producten', ProductController::class)->only(['edit', 'update']);
+    // Volledige product resource routes
+    Route::resource('producten', ProductController::class);
+
+    // Magazijn routes met nieuwe functionaliteiten
+    Route::resource('magazijnen', MagazijnController::class);
+    Route::get('/magazijnen/statistics/get', [MagazijnController::class, 'getStatistics'])->name('magazijnen.statistics');
+
+    // API routes voor AJAX calls
+    Route::get('/api/expiring-products', [ProductController::class, 'getExpiringProducts'])->name('api.expiring-products');
 });
 
 Route::post('/toggle-maintenance', [MaintenanceController::class, 'toggle'])->name('toggle.maintenance');

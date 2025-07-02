@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+        {{-- Header sectie met de titel van de pagina en productnaam --}}
         <h2 class="font-semibold text-xl leading-tight text-gray-900 dark:text-gray-100">
             {{ __('Product Details') }} - {{ $product->naam }}
         </h2>
@@ -7,8 +8,9 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Flash Messages -->
+            {{-- Flash berichten voor feedback aan de gebruiker --}}
             @if (session('success'))
+                {{-- Groen succesbericht met checkmark icoon --}}
                 <div class="bg-green-500 text-white p-4 rounded mb-4 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -17,7 +19,7 @@
                     {{ session('success') }}
                 </div>
 
-                <!-- Auto-redirect after 3 seconds on success -->
+                {{-- Automatische redirect na 3 seconden bij succesbericht --}}
                 <script>
                     setTimeout(function() {
                         window.location.href = "{{ route('inventory.details', $product) }}";
@@ -26,6 +28,7 @@
             @endif
 
             @if (session('error'))
+                {{-- Rood foutbericht met waarschuwings icoon --}}
                 <div class="bg-red-500 text-white p-4 rounded mb-4 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -36,13 +39,15 @@
                 </div>
             @endif
 
-            <!-- Product Information -->
+            {{-- Hoofdcontainer voor productinformatie --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
+                    {{-- Header met titel en actieknoppen --}}
                     <div class="flex justify-between items-start mb-6">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                             Product Details {{ $product->naam }}
                         </h3>
+                        {{-- Navigatieknoppen voor wijzigen, terug en home --}}
                         <div class="flex gap-2">
                             <a href="{{ route('inventory.edit', $product) }}"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -59,23 +64,28 @@
                         </div>
                     </div>
 
+                    {{-- Lijst met alle productdetails in een overzichtelijke layout --}}
                     <div class="space-y-4">
+                        {{-- Productnaam weergave --}}
                         <div class="flex justify-between py-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Productnaam</span>
                             <span class="text-sm text-gray-900 dark:text-gray-100">{{ $product->naam }}</span>
                         </div>
 
+                        {{-- Houdbaarheidsdatum met Nederlandse datumformattering --}}
                         <div class="flex justify-between py-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Houdbaarheidsdatum</span>
                             <span
                                 class="text-sm text-gray-900 dark:text-gray-100">{{ $product->houdbaarheidsdatum->format('d-m-Y') }}</span>
                         </div>
 
+                        {{-- Barcode van het product --}}
                         <div class="flex justify-between py-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Barcode</span>
                             <span class="text-sm text-gray-900 dark:text-gray-100">{{ $product->barcode }}</span>
                         </div>
 
+                        {{-- Magazijnlocatie met fallback voor lege waarden --}}
                         <div class="flex justify-between py-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Magazijn locatie</span>
                             <span class="text-sm text-gray-900 dark:text-gray-100">
@@ -87,6 +97,7 @@
                             </span>
                         </div>
 
+                        {{-- Ontvangstdatum met controle op beschikbaarheid --}}
                         <div class="flex justify-between py-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Ontvangstdatum</span>
                             <span class="text-sm text-gray-900 dark:text-gray-100">
@@ -98,6 +109,7 @@
                             </span>
                         </div>
 
+                        {{-- Uitleveringsdatum met status indicator --}}
                         <div class="flex justify-between py-3 border-b border-gray-200 dark:border-gray-700">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Uitleveringsdatum</span>
                             <span class="text-sm text-gray-900 dark:text-gray-100">
@@ -109,6 +121,7 @@
                             </span>
                         </div>
 
+                        {{-- Voorraadaantal met totaalberekening en verpakkingseenheid --}}
                         <div class="flex justify-between py-3">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Aantal op voorraad</span>
                             <span class="text-sm text-gray-900 dark:text-gray-100">

@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+        {{-- Pagina titel voor het voorraad overzicht --}}
         <h2 class="font-semibold text-xl leading-tight text-gray-900 dark:text-gray-100">
             {{ __('Overzicht Productvoorraden') }}
         </h2>
@@ -7,9 +8,11 @@
 
     <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Flash Messages -->
+
+            {{-- Succes en error berichten tonen aan de gebruiker --}}
             @if (session('success'))
                 <div class="bg-green-500 text-white p-3 sm:p-4 rounded mb-4 flex items-start">
+                    {{-- Groen vinkje icoon voor succes --}}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 mr-2 mt-0.5 flex-shrink-0"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -20,6 +23,7 @@
 
             @if (session('error'))
                 <div class="bg-red-500 text-white p-3 sm:p-4 rounded mb-4 flex items-start">
+                    {{-- Waarschuwings icoon voor errors --}}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 mr-2 mt-0.5 flex-shrink-0"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -29,16 +33,18 @@
                 </div>
             @endif
 
-            <!-- Category Filter Form -->
+            {{-- Filter formulier om producten te filteren op categorie --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-4 sm:p-6">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
                         Filter op Productcategorie
                     </h3>
 
+                    {{-- GET formulier om categorie filter toe te passen --}}
                     <form action="{{ route('inventory.overview') }}" method="GET"
                         class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-end gap-4">
 
+                        {{-- Dropdown menu met alle beschikbare categorieën --}}
                         <div class="flex-1 min-w-full sm:min-w-64">
                             <label for="categorie_id"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -47,6 +53,7 @@
                             <select name="categorie_id" id="categorie_id"
                                 class="block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600">
                                 <option value="">-- Selecteer een categorie --</option>
+                                {{-- Loop door alle categorieën en markeer de geselecteerde --}}
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         {{ isset($selectedCategory) && $selectedCategory == $category->id ? 'selected' : '' }}>
@@ -56,12 +63,15 @@
                             </select>
                         </div>
 
+                        {{-- Filter en reset knoppen --}}
                         <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                            {{-- Knop om filter toe te passen --}}
                             <button type="submit"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center">
                                 Toon Voorraad
                             </button>
 
+                            {{-- Knop om alle producten te tonen (reset filter) --}}
                             <a href="{{ route('inventory.overview') }}"
                                 class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center">
                                 Toon Alle Producten
@@ -71,16 +81,19 @@
                 </div>
             </div>
 
-            <!-- Products Inventory Table -->
+            {{-- Hoofdtabel met alle voorraad gegevens --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 sm:p-6">
+                    {{-- Header met titel en aantal producten info --}}
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                             Voorraadproducten
+                            {{-- Toon categorie naam als er gefilterd wordt --}}
                             @if (isset($categorie))
                                 - {{ $categorie->naam }}
                             @endif
                         </h3>
+                        {{-- Teller met totaal aantal en paginering info --}}
                         <div class="text-sm text-gray-600 dark:text-gray-400">
                             Totaal: {{ $producten->total() }} {{ $producten->total() === 1 ? 'product' : 'producten' }}
                             <span class="hidden sm:inline">
@@ -91,22 +104,26 @@
                     </div>
 
                     @if ($producten->count() > 0)
-                        <!-- Mobile Card View (hidden on desktop) -->
+                        {{-- Mobiele kaart weergave (alleen zichtbaar op kleine schermen) --}}
                         <div class="block sm:hidden space-y-4">
                             @foreach ($producten as $product)
+                                {{-- Elke product als een kaart op mobiel --}}
                                 <div
                                     class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
+                                    {{-- Product naam en beschrijving --}}
                                     <div class="flex justify-between items-start mb-3">
                                         <div class="flex-1">
                                             <h4 class="font-medium text-gray-900 dark:text-gray-100">
                                                 {{ $product->naam }}
                                             </h4>
+                                            {{-- Verkorte beschrijving tonen als beschikbaar --}}
                                             @if ($product->omschrijving)
                                                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                                     {{ Str::limit($product->omschrijving, 60) }}
                                                 </p>
                                             @endif
                                         </div>
+                                        {{-- Details knop met oog icoon --}}
                                         <a href="{{ route('inventory.details', $product) }}"
                                             class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 ml-2"
                                             title="Bekijk details">
@@ -121,13 +138,16 @@
                                         </a>
                                     </div>
 
+                                    {{-- Grid met product informatie in 2 kolommen --}}
                                     <div class="grid grid-cols-2 gap-3 text-sm">
+                                        {{-- Categorie informatie --}}
                                         <div>
                                             <span class="text-gray-500 dark:text-gray-400">Categorie:</span>
                                             <div class="font-medium text-gray-900 dark:text-gray-100">
                                                 {{ $product->categorie->naam ?? 'Onbekend' }}
                                             </div>
                                         </div>
+                                        {{-- Voorraad aantal met eenheid --}}
                                         <div>
                                             <span class="text-gray-500 dark:text-gray-400">Aantal:</span>
                                             <div class="font-medium text-gray-900 dark:text-gray-100">
@@ -141,9 +161,11 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        {{-- Houdbaarheidsdatum met kleurcodering --}}
                                         <div>
                                             <span class="text-gray-500 dark:text-gray-400">Houdbaar tot:</span>
                                             @php
+                                                // Check of product verlopen of bijna verlopen is
                                                 $isExpired = $product->houdbaarheidsdatum < now();
                                                 $isExpiringSoon = $product->houdbaarheidsdatum < now()->addDays(7);
                                             @endphp
@@ -152,10 +174,12 @@
                                                 {{ $product->houdbaarheidsdatum->format('d-m-Y') }}
                                             </div>
                                         </div>
+                                        {{-- Magazijn locaties als tags --}}
                                         <div>
                                             <span class="text-gray-500 dark:text-gray-400">Locatie:</span>
                                             <div>
                                                 @if ($product->magazijnen->count() > 0)
+                                                    {{-- Toon elke locatie als een blauwe tag --}}
                                                     @foreach ($product->magazijnen as $magazijn)
                                                         <span
                                                             class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800 mr-1 mb-1">
@@ -172,9 +196,10 @@
                             @endforeach
                         </div>
 
-                        <!-- Desktop Table View (hidden on mobile) -->
+                        {{-- Desktop tabel weergave (verborgen op mobiel) --}}
                         <div class="hidden sm:block overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                {{-- Tabel headers --}}
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <th
@@ -207,23 +232,28 @@
                                         </th>
                                     </tr>
                                 </thead>
+                                {{-- Tabel rijen met product data --}}
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                     @foreach ($producten as $product)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            {{-- Product naam en beschrijving cel --}}
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
                                                     {{ $product->naam }}
                                                 </div>
+                                                {{-- Verkorte beschrijving onder de naam --}}
                                                 @if ($product->omschrijving)
                                                     <div class="text-sm text-gray-500 dark:text-gray-400">
                                                         {{ Str::limit($product->omschrijving, 50) }}
                                                     </div>
                                                 @endif
                                             </td>
+                                            {{-- Categorie naam --}}
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                                 {{ $product->categorie->naam ?? 'Onbekend' }}
                                             </td>
+                                            {{-- Verpakkings eenheid --}}
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                                 @if ($product->magazijnen->count() > 0)
@@ -232,6 +262,7 @@
                                                     <span class="text-gray-400">Onbekend</span>
                                                 @endif
                                             </td>
+                                            {{-- Totaal aantal in voorraad --}}
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                                 @if ($product->magazijnen->count() > 0)
@@ -240,8 +271,10 @@
                                                     <span class="text-gray-400">0</span>
                                                 @endif
                                             </td>
+                                            {{-- Houdbaarheidsdatum met kleur based op status --}}
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                 @php
+                                                    // Bepaal of product verlopen of bijna verlopen is
                                                     $isExpired = $product->houdbaarheidsdatum < now();
                                                     $isExpiringSoon = $product->houdbaarheidsdatum < now()->addDays(7);
                                                 @endphp
@@ -250,8 +283,10 @@
                                                     {{ $product->houdbaarheidsdatum->format('d-m-Y') }}
                                                 </span>
                                             </td>
+                                            {{-- Magazijn locaties als tags --}}
                                             <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                                                 @if ($product->magazijnen->count() > 0)
+                                                    {{-- Elke locatie op een nieuwe regel --}}
                                                     @foreach ($product->magazijnen as $magazijn)
                                                         <div class="mb-1">
                                                             <span
@@ -264,10 +299,12 @@
                                                     <span class="text-gray-400">Geen locatie</span>
                                                 @endif
                                             </td>
+                                            {{-- Details knop voor meer informatie --}}
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                 <a href="{{ route('inventory.details', $product) }}"
                                                     class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
                                                     title="Bekijk details">
+                                                    {{-- Oog icoon voor details --}}
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -286,13 +323,14 @@
                             </table>
                         </div>
 
-                        <!-- Pagination Links -->
+                        {{-- Paginering links onder de tabel --}}
                         <div class="mt-6">
                             {{ $producten->appends(request()->query())->links() }}
                         </div>
                     @else
+                        {{-- Verschillende lege state berichten afhankelijk van filter --}}
                         @if (isset($selectedCategory) && $selectedCategory)
-                            <!-- Error message for no products in selected category -->
+                            {{-- Geen producten gevonden voor geselecteerde categorie --}}
                             <div class="bg-red-500 text-white p-3 sm:p-4 rounded mb-4 flex items-start">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="h-5 w-5 sm:h-6 sm:w-6 mr-2 mt-0.5 flex-shrink-0" fill="none"
@@ -304,8 +342,9 @@
                                     geselecteerde productcategorie.</span>
                             </div>
                         @else
-                            <!-- Default no products message -->
+                            {{-- Algemeen geen producten bericht --}}
                             <div class="text-center py-8 sm:py-12">
+                                {{-- Lege doos icoon --}}
                                 <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
