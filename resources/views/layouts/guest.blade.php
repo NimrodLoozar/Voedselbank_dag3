@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Voedselbank Maaskantje</title>
 
     <!-- Script to prevent flash of incorrect theme -->
     <script>
@@ -38,17 +38,18 @@
         <x-theme-toggle />
     </nav>
     <div class="relative min-h-screen bg-cover bg-center"
-        style="background-image: url('{{ asset('img/mercedes.jpg') }}');">
+        style="background: #ffee00; background: linear-gradient(212deg, rgba(255, 238, 0, 1) 0%, rgba(237, 168, 83, 1) 100%);">
         <div class="absolute inset-0 bg-black opacity-50 pointer-events-none"></div>
         <div class="relative z-10 min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-            <div>
-                <a href="/">
-                    {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> --}}
-                    <img src="{{ asset('img/favicon.ico') }}" alt="Logo" class="w-20 h-20">
+            <div class="mb-6">
+                <a href="/" class="flex items-center justify-center">
+                    <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-6 px-8 py-8 bg-white dark:bg-gray-800 shadow-2xl overflow-hidden sm:rounded-lg backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
                 {{ $slot }}
             </div>
         </div>
