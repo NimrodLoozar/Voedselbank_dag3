@@ -79,11 +79,14 @@
 
 
                         <div class="hidden lg:flex lg:gap-x-6">
-                            <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')" class="text-white">
-                                {{ __('Voedselpakketten') }}
+                            <x-nav-link :href="route('klanten.index')" :active="request()->routeIs('klanten.*')" class="text-white">
+                                {{ __('Klanten') }}
                             </x-nav-link>
                             <x-nav-link :href="route('inventory.overview')" :active="request()->routeIs('inventory.overview')" class="text-white">
                                 {{ __('Voorraad') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('voedselpakketten.index')" :active="request()->routeIs('voedselpakketten.index')" class="text-white">
+                                {{ __('Voedselpakketten') }}
                             </x-nav-link>
                             <x-nav-link :href="route('leveranciers.index')" :active="request()->routeIs('leveranciers.index')" class="text-white">
                                 {{ __('Leveranciers') }}

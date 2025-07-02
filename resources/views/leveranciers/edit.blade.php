@@ -31,8 +31,9 @@
                     <label for="houdbaarheidsdatum" style="font-weight: bold; font-size: 1rem; min-width: 140px;">
                         Houdbaarheidsdatum:
                     </label>
-                    <input type="date" id="houdbaarheidsdatum" name="houdbaarheidsdatum"
+                    <input type="date" id="houdbaarheidsdatum" name="houdbaarheidsdatum" 
                         value="{{ old('houdbaarheidsdatum', $product->houdbaarheidsdatum ? \Carbon\Carbon::parse($product->houdbaarheidsdatum)->format('Y-m-d') : '') }}"
+                        min="{{ date('Y-m-d') }}"
                         required style="padding: 7px; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc; min-width: 140px;">
                 </div>
                 <div style="margin-top: 1.5rem; display: flex; gap: 0.8rem; align-items: center;">
