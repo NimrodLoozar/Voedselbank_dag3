@@ -19,6 +19,18 @@
                 </div>
             @endif
 
+            <!-- Success Message with Auto-redirect -->
+            @if(session('success') && session('redirect_to_show'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('klanten.update', $gezin) }}">
                 @csrf
                 @method('PUT')
@@ -119,12 +131,23 @@
                             <div class="grid grid-cols-3 gap-4 items-center">
                                 <label for="huisnummer" class="text-sm font-medium text-gray-700 dark:text-gray-300">Huisnummer</label>
                                 <div class="col-span-2">
-                                    <input type="text" name="huisnummer" id="huisnummer" 
+                                    <input type="number" name="huisnummer" id="huisnummer" 
                                            value="{{ old('huisnummer', $contact ? $contact->huisnummer : '') }}"
-                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                           min="1" max="9999"
+                                           placeholder="Bijv. 10"
+                                           title="Voer een geldig huisnummer in (1-9999)"
+                                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('huisnummer') border-red-500 @enderror">
                                     @error('huisnummer')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                        <p class="mt-1 text-sm text-red-600 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
                                     @enderror
+                                    <p class="mt-1 text-xs text-gray-500">
+                                        Voer een positief huisnummer in (1-9999)
+                                    </p>
                                 </div>
                             </div>
 
@@ -229,24 +252,26 @@
         </div>
     </div>
 
-    <!-- JavaScript for mobile number validation -->
+    <!-- JavaScript for mobile number and house number validation -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const mobileInput = document.getElementById('mobiel');
+            const houseNumberInput = document.getElementById('huisnummer');
             
+            // Mobile number validation
             if (mobileInput) {
                 // Real-time validation feedback
                 mobileInput.addEventListener('input', function() {
                     const value = this.value.trim();
                     if (value === '') {
-                        clearValidationFeedback();
+                        clearMobileValidationFeedback();
                         return;
                     }
                     
                     if (isValidDutchMobile(value)) {
-                        showValidFeedback();
+                        showMobileValidFeedback();
                     } else {
-                        showInvalidFeedback();
+                        showMobileInvalidFeedback();
                     }
                 });
 
@@ -265,6 +290,54 @@
                 });
             }
 
+            // House number validation
+            if (houseNumberInput) {
+                houseNumberInput.addEventListener('input', function() {
+                    const value = parseInt(this.value);
+                    
+                    if (this.value === '') {
+                        clearHouseNumberValidationFeedback();
+                        return;
+                    }
+
+                    if (isNaN(value) || value < 1 || value > 9999) {
+                        showHouseNumberInvalidFeedback();
+                    } else {
+                        showHouseNumberValidFeedback();
+                    }
+                });
+
+                // Prevent negative numbers from being entered
+                houseNumberInput.addEventListener('keydown', function(e) {
+                    // Allow: backspace, delete, tab, escape, enter
+                    if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                        // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 86 && e.ctrlKey === true) ||
+                        (e.keyCode === 88 && e.ctrlKey === true) ||
+                        // Allow: home, end, left, right
+                        (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Prevent pasting negative numbers
+                houseNumberInput.addEventListener('paste', function(e) {
+                    setTimeout(() => {
+                        const value = parseInt(this.value);
+                        if (isNaN(value) || value < 1) {
+                            this.value = '';
+                            showHouseNumberInvalidFeedback();
+                        }
+                    }, 0);
+                });
+            }
+
             function isValidDutchMobile(mobile) {
                 // Trim whitespace
                 mobile = mobile.trim();
@@ -277,22 +350,47 @@
                 return patterns.some(pattern => pattern.test(mobile));
             }
 
-            function showValidFeedback() {
+            function showMobileValidFeedback() {
                 const input = document.getElementById('mobiel');
                 input.classList.remove('border-red-500');
                 input.classList.add('border-green-500');
             }
 
-            function showInvalidFeedback() {
+            function showMobileInvalidFeedback() {
                 const input = document.getElementById('mobiel');
                 input.classList.remove('border-green-500');
                 input.classList.add('border-red-500');
             }
 
-            function clearValidationFeedback() {
+            function clearMobileValidationFeedback() {
                 const input = document.getElementById('mobiel');
                 input.classList.remove('border-red-500', 'border-green-500');
             }
+
+            function showHouseNumberValidFeedback() {
+                const input = document.getElementById('huisnummer');
+                input.classList.remove('border-red-500');
+                input.classList.add('border-green-500');
+            }
+
+            function showHouseNumberInvalidFeedback() {
+                const input = document.getElementById('huisnummer');
+                input.classList.remove('border-green-500');
+                input.classList.add('border-red-500');
+            }
+
+            function clearHouseNumberValidationFeedback() {
+                const input = document.getElementById('huisnummer');
+                input.classList.remove('border-red-500', 'border-green-500');
+            }
+
+            // Auto-redirect functionality for success message
+            @if(session('success') && session('redirect_to_show'))
+                // Start redirect timer immediately
+                setTimeout(() => {
+                    window.location.href = '{{ route("klanten.show", $gezin) }}';
+                }, 3000); // 3 seconds
+            @endif
         });
     </script>
 </x-app-layout>

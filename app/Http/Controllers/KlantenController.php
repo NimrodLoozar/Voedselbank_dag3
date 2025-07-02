@@ -136,7 +136,7 @@ class KlantenController extends Controller
                     }
                 }],
                 'straat' => 'nullable|string|max:255',
-                'huisnummer' => 'nullable|string|max:10',
+                'huisnummer' => 'nullable|integer|min:1|max:9999',
                 'toevoeging' => 'nullable|string|max:10',
                 'postcode' => ['nullable', 'string', 'max:10', function ($attribute, $value, $fail) {
                     if ($value && !Klanten::isValidMaaskantjePostcode($value)) {
@@ -190,8 +190,10 @@ class KlantenController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return redirect()->route('klanten.show', $gezin)
-                ->with('success', 'De klantgegevens zijn gewijzigd');
+            // Redirect back to edit page with success message and redirect flag
+            return redirect()->route('klanten.edit', $gezin)
+                ->with('success', 'De klantgegevens zijn gewijzigd')
+                ->with('redirect_to_show', true);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Validation errors - let Laravel handle these normally
@@ -231,11 +233,19 @@ class KlantenController extends Controller
                 'vertegenwoordiger_achternaam' => 'required|string|max:255',
                 'vertegenwoordiger_tussenvoegsel' => 'nullable|string|max:255',
                 'email' => 'nullable|email',
-                'mobiel' => 'nullable|string|max:20',
+                'mobiel' => ['nullable', 'string', 'max:20', function ($attribute, $value, $fail) {
+                    if ($value && !Klanten::isValidDutchMobile($value)) {
+                        $fail('Het mobiele nummer moet een geldig Nederlands mobiel nummer zijn (bijv. 06xxxxxxxx of +31 6xxxxxxxx)');
+                    }
+                }],
                 'straat' => 'nullable|string|max:255',
-                'huisnummer' => 'nullable|string|max:10',
+                'huisnummer' => 'nullable|integer|min:1|max:9999',
                 'toevoeging' => 'nullable|string|max:10',
-                'postcode' => 'nullable|string|max:10',
+                'postcode' => ['nullable', 'string', 'max:10', function ($attribute, $value, $fail) {
+                    if ($value && !Klanten::isValidMaaskantjePostcode($value)) {
+                        $fail('De postcode komt niet uit de regio Maaskantje');
+                    }
+                }],
                 'woonplaats' => 'nullable|string|max:255',
             ]);
 
