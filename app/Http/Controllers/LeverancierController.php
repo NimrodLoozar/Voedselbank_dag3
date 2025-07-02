@@ -87,25 +87,31 @@ class LeverancierController extends Controller
      */
     public function store(Request $request)
     {
-        // Valideer de inkomende data volgens de business rules
-        $request->validate([
-            'naam' => 'required|string|max:255',
-            'contact_persoon' => 'required|string|max:255',
-            'leverancier_nummer' => 'required|string|max:10|unique:leveranciers',
-            'leverancier_type' => 'required|in:Bedrijf,Instelling,Overheid,Particulier,Donor'
-        ]);
+        try {
+            // Valideer de inkomende data volgens de business rules
+            $request->validate([
+                'naam' => 'required|string|max:255',
+                'contact_persoon' => 'required|string|max:255',
+                'leverancier_nummer' => 'required|string|max:10|unique:leveranciers',
+                'leverancier_type' => 'required|in:Bedrijf,Instelling,Overheid,Particulier,Donor'
+            ]);
 
-        // Maak een nieuwe leverancier aan met de gevalideerde data
-        $leverancier = Leverancier::create($request->all());
+            // Maak een nieuwe leverancier aan met de gevalideerde data
+            $leverancier = Leverancier::create($request->all());
 
-        // Koppel geselecteerde contacten aan de leverancier (many-to-many relatie)
-        if ($request->has('contact_ids')) {
-            $leverancier->contacts()->attach($request->contact_ids);
+            // Koppel geselecteerde contacten aan de leverancier (many-to-many relatie)
+            if ($request->has('contact_ids')) {
+                $leverancier->contacts()->attach($request->contact_ids);
+            }
+
+            // Redirect naar het overzicht met een succesbericht
+            return redirect()->route('leveranciers.index')
+                ->with('success', 'Leverancier succesvol aangemaakt.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Er is een fout opgetreden bij het aanmaken van de leverancier.')
+                ->withInput();
         }
-
-        // Redirect naar het overzicht met een succesbericht
-        return redirect()->route('leveranciers.index')
-            ->with('success', 'Leverancier succesvol aangemaakt.');
     }
 
     /**
@@ -184,23 +190,29 @@ class LeverancierController extends Controller
      */
     public function update(Request $request, Leverancier $leverancier)
     {
-        // Valideer de bijgewerkte data, exclusief het huidige leverancier nummer
-        $request->validate([
-            'naam' => 'required|string|max:255',
-            'contact_persoon' => 'required|string|max:255',
-            'leverancier_nummer' => 'required|string|max:10|unique:leveranciers,leverancier_nummer,' . $leverancier->id,
-            'leverancier_type' => 'required|in:Bedrijf,Instelling,Overheid,Particulier,Donor'
-        ]);
+        try {
+            // Valideer de bijgewerkte data, exclusief het huidige leverancier nummer
+            $request->validate([
+                'naam' => 'required|string|max:255',
+                'contact_persoon' => 'required|string|max:255',
+                'leverancier_nummer' => 'required|string|max:10|unique:leveranciers,leverancier_nummer,' . $leverancier->id,
+                'leverancier_type' => 'required|in:Bedrijf,Instelling,Overheid,Particulier,Donor'
+            ]);
 
-        // Werk de leverancier bij met de gevalideerde data
-        $leverancier->update($request->all());
+            // Werk de leverancier bij met de gevalideerde data
+            $leverancier->update($request->all());
 
-        // Synchroniseer de gekoppelde contacten (verwijder oude, voeg nieuwe toe)
-        $leverancier->contacts()->sync($request->contact_ids ?? []);
+            // Synchroniseer de gekoppelde contacten (verwijder oude, voeg nieuwe toe)
+            $leverancier->contacts()->sync($request->contact_ids ?? []);
 
-        // Redirect naar het overzicht met een succesbericht
-        return redirect()->route('leveranciers.index')
-            ->with('success', 'Leverancier succesvol bijgewerkt.');
+            // Redirect naar het overzicht met een succesbericht
+            return redirect()->route('leveranciers.index')
+                ->with('success', 'Leverancier succesvol bijgewerkt.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Er is een fout opgetreden bij het bijwerken van de leverancier.')
+                ->withInput();
+        }
     }
 
     /**
@@ -211,12 +223,17 @@ class LeverancierController extends Controller
      */
     public function destroy(Leverancier $leverancier)
     {
-        // Verwijder de leverancier (cascade regels zorgen voor gekoppelde data)
-        $leverancier->delete();
+        try {
+            // Verwijder de leverancier (cascade regels zorgen voor gekoppelde data)
+            $leverancier->delete();
 
-        // Redirect naar het overzicht met een succesbericht
-        return redirect()->route('leveranciers.index')
-            ->with('success', 'Leverancier succesvol verwijderd.');
+            // Redirect naar het overzicht met een succesbericht
+            return redirect()->route('leveranciers.index')
+                ->with('success', 'Leverancier succesvol verwijderd.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Er is een fout opgetreden bij het verwijderen van de leverancier.');
+        }
     }
 
     /**
@@ -242,28 +259,34 @@ class LeverancierController extends Controller
      */
     public function updateProduct(Request $request, Leverancier $leverancier, Product $product)
     {
-        $request->validate([
-            'houdbaarheidsdatum' => 'required|date|after_or_equal:today',
-        ]);
+        try {
+            $request->validate([
+                'houdbaarheidsdatum' => 'required|date|after_or_equal:today',
+            ]);
 
-        $oudeDatum = $product->houdbaarheidsdatum ? \Carbon\Carbon::parse($product->houdbaarheidsdatum) : null;
-        $nieuweDatum = \Carbon\Carbon::parse($request->houdbaarheidsdatum);
+            $oudeDatum = $product->houdbaarheidsdatum ? \Carbon\Carbon::parse($product->houdbaarheidsdatum) : null;
+            $nieuweDatum = \Carbon\Carbon::parse($request->houdbaarheidsdatum);
 
-        // Als er al een datum is, check of verlenging maximaal 7 dagen is
-        if ($oudeDatum && $nieuweDatum->gt($oudeDatum)) {
-            $verschil = $oudeDatum->diffInDays($nieuweDatum);
-            if ($verschil > 7) {
-                return redirect()->back()
-                    ->with('error', 'De houdbaarheidsdatum is niet gewijzigd. De houdbaarheidsdatum mag met maximaal 7 dagen worden verlengd')
-                    ->withInput();
+            // Als er al een datum is, check of verlenging maximaal 7 dagen is
+            if ($oudeDatum && $nieuweDatum->gt($oudeDatum)) {
+                $verschil = $oudeDatum->diffInDays($nieuweDatum);
+                if ($verschil > 7) {
+                    return redirect()->back()
+                        ->with('error', 'De houdbaarheidsdatum is niet gewijzigd. De houdbaarheidsdatum mag met maximaal 7 dagen worden verlengd')
+                        ->withInput();
+                }
             }
+
+            $product->houdbaarheidsdatum = $nieuweDatum->format('Y-m-d');
+            $product->save();
+
+            // Wireframe-05: altijd deze melding bij succes
+            return redirect()->route('leveranciers.show', $leverancier->id)
+                ->with('success', 'De houdbaarbaarheidsdatum is gewijzigd');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Er is een fout opgetreden bij het wijzigen van de houdbaarheidsdatum.')
+                ->withInput();
         }
-
-        $product->houdbaarheidsdatum = $nieuweDatum->format('Y-m-d');
-        $product->save();
-
-        // Wireframe-05: altijd deze melding bij succes
-        return redirect()->route('leveranciers.show', $leverancier->id)
-            ->with('success', 'De houdbaarbaarheidsdatum is gewijzigd');
     }
 }
