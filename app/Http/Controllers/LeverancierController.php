@@ -243,7 +243,7 @@ class LeverancierController extends Controller
     public function updateProduct(Request $request, Leverancier $leverancier, Product $product)
     {
         $request->validate([
-            'houdbaarheidsdatum' => 'required|date',
+            'houdbaarheidsdatum' => 'required|date|after_or_equal:today',
         ]);
 
         $oudeDatum = $product->houdbaarheidsdatum ? \Carbon\Carbon::parse($product->houdbaarheidsdatum) : null;
