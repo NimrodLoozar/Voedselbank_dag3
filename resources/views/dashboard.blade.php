@@ -10,14 +10,17 @@
         </div>
     </x-slot>
 
-    <div class="relative h-64 w-full mb-8">
+    <div class="relative h-36 w-full mb-8">
         <img src="{{ asset('img/volunteers-collecting-food-donations-close-up.jpg') }}"
              alt="Volunteers collecting food donations" 
-             class="w-full h-full object-cover"
+             class="w-full h-24 object-cover"
              onerror="this.onerror=null; this.src='{{ asset('img/default.jpg') }}'; console.log('Image failed to load');"
              onload="console.log('Image loaded successfully');">
         <div class="absolute inset-0 flex items-center justify-center">
-            <h1 class="text-4xl font-bold text-white text-shadow-lg" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Welkom bij Voedselbank Maaskantje</h1>
+            <h1 class="text-3xl font-bold text-white text-shadow-lg" 
+                style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                Welkom bij Voedselbank Maaskantje
+            </h1>
         </div>
     </div>
     <div class="py-12">
